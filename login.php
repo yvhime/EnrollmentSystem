@@ -8,6 +8,7 @@ $email_address = ""; //putting a non value
 
 //can use _POST or _REQUEST / *_SESSION DOESNT WORK FOR SOME REASONS ON ISSET LOGIN 
 //to pass values by session
+//submit button -- name = login, id = login, value = login
 if(isset($_REQUEST['login'])) {
 
     $email_address = $_POST['email_address'];
@@ -18,7 +19,6 @@ if(isset($_REQUEST['login'])) {
         $_SESSION['id'] = $sql_row['id'];
         $_SESSION['firstname'] = $sql_row['firstname'];
         $_SESSION['lastname'] = $sql_row['lastname'];
-        //$_SESSION['username'] = $sql_row['username'];
         $_SESSION['email_address'] = $sql_row['email_address'];
         $_SESSION['password'] = $sql_row['password'];
         $_SESSION['phonenumber'] = $sql_row['phonenumber'];
@@ -36,7 +36,7 @@ if(isset($_REQUEST['login'])) {
 //code for logging in
 //check whether the variable is empty
 //or is set/declared
-if(isset($_POST['login'])) { // email_address
+if(isset($_POST['login'])) { // email_address used for logging in
 
     // $email_address = $_POST['email_address'];
     // $pass_word = $_POST['pass_word'];
@@ -138,21 +138,9 @@ if(isset($_POST['login'])) { // email_address
                                                 id="email_address" aria-describedby="emailHelp" value="<?php echo $email_address ?>" placeholder="Email Address">
                                         </div>
                                         <div class="form-group">
-                                            <!-- col-sm-6 mb-3 mb-sm-0 trystyle-->
-                                            <!-- form-group col-lg-11 row justify-content-left default -->
-
-                                            <!-- enter password -->
-                                            <!-- <div class="col-sm-11 mb-3 mb-sm-0">
-                                                <input type="password" class="form-control form-control-user" name="pass_word" id="pass_word" placeholder="Password">
-                                            </div> -->
-                                            <!-- <div class="col-sm-1">
-                                                <input type="checkbox" class="form-check-input" name="" id="showPass" onclick="showPassword()">
-                                                <label class="form-check-label" for="showPass"></label> -->
-
-                                                <!-- <span toggle="#password-field" class="fa fa-fw fa-eye passwordIcon toggle-password"></span> -->
-                                            <!-- </div> -->
 
                                             <!-- this will work but have to edit the upper part  -->
+                                            <!-- password input with showPassword checkbox -->
                                             <div class="input-group mb-3">
                                                 <input type="password" class="form-control" aria-label="Text input with checkbox"
                                                 placeholder="Password" name="pass_word" id="pass_word">
@@ -163,6 +151,7 @@ if(isset($_POST['login'])) { // email_address
                                                         </div>
                                                     </div>
                                             </div>
+                                            <!-- password input with showPassword checkbox -->
 
                                         </div>
                                         
@@ -224,6 +213,7 @@ if(isset($_POST['login'])) { // email_address
             }
         }
     </script>
+    <!-- show password codes -->
 
 </body>
 
