@@ -73,7 +73,7 @@
                 </a>
 
                 <a class="nav-link collapsed" href="addprogram.php" aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-fw fa-cog"></i>
+                    <i class="far fa-plus-square"></i>
                     <span>Add New Program</span>
                 </a>
             </li>
