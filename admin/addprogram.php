@@ -1,31 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
 <?php
-session_start();
-include("connection.php");
+    session_start();
+    include("connection.php");
 
     //this code doesnt allow you to access this page(index.php) without being logged in with session['username']
     if (!isset($_SESSION['username'])) {
         header("Location: login.php");
     }
 
-if (isset($_POST['submitCourse'])) {
-    $degree = $_POST['degree'];
-    $courseName = $_POST['courseName'];
-    //echo $degree . $courseName;
-    $check_duplicate = mysqli_query($connect, "SELECT id FROM program WHERE coursename = '$courseName' ");
-    $row = mysqli_num_rows($check_duplicate);
-    //check for duplicate coursename
-    if($row > 0) {
-        echo "<script>alert('Program already exists. Enter a new one.')</script>";    
-    } 
-    //insert coursename to tbl program
-    else {
-        $inputCourse = mysqli_query($connect, "INSERT INTO program (degree, coursename) VALUES ('$degree', '$courseName')");
-        echo "<script>alert('Program added!')</script>";
-        echo "<script>window.location = 'viewprograms.php'</script>";
+    //default no value -- reference for select/option tag for degree / input tag courseName
+    $degree = "";
+    $courseName = "";
+
+    //check of submitbutton/submitCourse is set
+    if (isset($_POST['submitCourse'])) {
+        $degree = $_POST['degree'];
+        $courseName = $_POST['courseName'];
+        //echo $degree . $courseName;
+
+        //to check if degree dropdown has a value/ if no value is selected it wont enter the data into database
+        if ($degree == "default") {
+            echo "<script> alert('Please select a degree.') </script>";
+            //echo "<script> window.location='addprogram.php' </script>";
+        } else {
+            $check_duplicate = mysqli_query($connect, "SELECT id FROM program WHERE coursename = '$courseName' ");
+            $row = mysqli_num_rows($check_duplicate);
+            //check for duplicate coursename
+            if($row > 0) {
+                echo "<script>alert('Program already exists. Enter a new one.')</script>";    
+            } 
+            //insert coursename to tbl program
+            else {
+                $inputCourse = mysqli_query($connect, "INSERT INTO program (degree, coursename) VALUES ('$degree', '$courseName')");
+                echo "<script>alert('Program added!')</script>";
+                echo "<script>window.location = 'viewprograms.php'</script>";
+            }
+        }
     }
-}
 ?>
 
 <style>
@@ -97,7 +109,7 @@ if (isset($_POST['submitCourse'])) {
                 </a>
 
                 <a class="nav-link collapsed" href="addprogram.php" aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-fw fa-cog"></i>
+                    <i class="far fa-plus-square"></i>
                     <span>Add New Program</span>
                 </a>
             </li>
@@ -219,72 +231,6 @@ if (isset($_POST['submitCourse'])) {
                             </div>
                         </li>
 
-                        <!-- Nav Item - Messages -->
-                        <li class="nav-item dropdown no-arrow mx-1">
-                            <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-envelope fa-fw"></i>
-                                <!-- Counter - Messages -->
-                                <span class="badge badge-danger badge-counter">7</span>
-                            </a>
-                            <!-- Dropdown - Messages -->
-                            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                                aria-labelledby="messagesDropdown">
-                                <h6 class="dropdown-header">
-                                    Message Center
-                                </h6>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src="img/undraw_profile_1.svg"
-                                            alt="">
-                                        <div class="status-indicator bg-success"></div>
-                                    </div>
-                                    <div class="font-weight-bold">
-                                        <div class="text-truncate">Hi there! I am wondering if you can help me with a
-                                            problem I've been having.</div>
-                                        <div class="small text-gray-500">Emily Fowler · 58m</div>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src="img/undraw_profile_2.svg"
-                                            alt="">
-                                        <div class="status-indicator"></div>
-                                    </div>
-                                    <div>
-                                        <div class="text-truncate">I have the photos that you ordered last month, how
-                                            would you like them sent to you?</div>
-                                        <div class="small text-gray-500">Jae Chun · 1d</div>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src="img/undraw_profile_3.svg"
-                                            alt="">
-                                        <div class="status-indicator bg-warning"></div>
-                                    </div>
-                                    <div>
-                                        <div class="text-truncate">Last month's report looks great, I am very happy with
-                                            the progress so far, keep up the good work!</div>
-                                        <div class="small text-gray-500">Morgan Alvarez · 2d</div>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src="https://source.unsplash.com/Mv9hjnEUHR4/60x60"
-                                            alt="">
-                                        <div class="status-indicator bg-success"></div>
-                                    </div>
-                                    <div>
-                                        <div class="text-truncate">Am I a good boy? The reason I ask is because someone
-                                            told me that people say this to all dogs, even if they aren't good...</div>
-                                        <div class="small text-gray-500">Chicken the Dog · 2w</div>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
-                            </div>
-                        </li>
-
                         <div class="topbar-divider d-none d-sm-block"></div>
 
                         <!-- Nav Item - User Information -->
@@ -342,43 +288,17 @@ if (isset($_POST['submitCourse'])) {
                                 </div>
                                 <form method="POST" action="">
                                 <div class="card-body">
-                                    <!-- <p>Degree: 
-                                        <select name="degree" id="degree" > 
-                                            <option value="Bachelor of Science">Bachelor of Science</option>
-                                            <option value="Bachelor of Arts">Bachelor of Arts</option>
-                                        </select>
-                                    </p> -->
-                                    <!-- class="form-control form-control-user col-sm-6" STYLE FOR SELECT TAG-->
-
-                                        <!-- <div class="dropdown mb-4">
-                                        <button class="btn btn-primary dropdown-toggle" type="button"
-                                            id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
-                                            aria-expanded="false">
-                                            Dropdown
-                                        </button>
-                                        <div class="dropdown-menu animated--fade-in"
-                                            aria-labelledby="dropdownMenuButton">
-                                            <a class="dropdown-item" href="#">Action</a>
-                                            <a class="dropdown-item" href="#">Another action</a>
-                                            <a class="dropdown-item" href="#">Something else here</a>
-                                        </div>
-                                        </div> -->
-                                    
-                                        <!-- <div class="form-group row"> -->
-                                            <!-- <div class="col-sm-6 mb-3 mb-sm-0">
-                                                Program Name: <input type="text" class="form-control form-control-user" name="courseName" id="courseName" placeholder="">
-                                            </div> -->
-                                        <!-- </div> -->
-
 
                                         <div class="input-group mb-3">
                                             <div class="input-group-prepend">
                                                 <label class="input-group-text" for="course">Degree:</label>
                                             </div>
                                             <select class="custom-select" id="degree" name="degree">
-                                                <option selected>...</option>
-                                                <option value="Bachelor of Science">Bachelor of Science</option>
-                                                <option value="Bachelor of Arts">Bachelor of Arts</option>
+                                                <option value="default" selected>...</option>
+                                                <option <?php if($degree == "Bachelor of Science") echo "selected"; ?> 
+                                                    value="Bachelor of Science">Bachelor of Science</option>
+                                                <option <?php if($degree == "Bachelor of Arts") echo "selected"; ?> 
+                                                    value="Bachelor of Arts">Bachelor of Arts</option>
                                             <?php
                                                 // $courseList = "SELECT * FROM program";
                                                 // $courseListResult = mysqli_query($connect, $courseList);
@@ -394,7 +314,8 @@ if (isset($_POST['submitCourse'])) {
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="">Program Name:</span>
                                             </div>
-                                            <input type="text" class="form-control" placeholder="" name="courseName" id="courseName">
+                                            <input type="text" class="form-control" placeholder="" name="courseName" id="courseName"
+                                                value="<?php echo $courseName; ?>">
                                         </div>
                                     
                                     <input type="submit" class="btn btn-primary btn-user btn-block" name="submitCourse" id="submitCourse" value="Submit">
