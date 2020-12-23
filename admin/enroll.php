@@ -107,7 +107,7 @@
                 </a>
 
                 <a class="nav-link collapsed" href="addprogram.php" aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-fw fa-cog"></i>
+                    <i class="far fa-plus-square"></i>
                     <span>Add New Program</span>
                 </a>
 
@@ -248,6 +248,10 @@
                                             $firstName= $rowResult["firstname"];
                                             $lastName = $rowResult["lastname"];
                                             $emailAddress = $rowResult["email_address"];
+                                            $program = $rowResult["program"];
+                                            $currentYearLevel = $rowResult["yearlevel"];
+                                            $currentSemester = $rowResult["semester"];
+                                            //echo $program;
                                     ?>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
@@ -300,8 +304,10 @@
                                         <div class="input-group-prepend">
                                             <label class="input-group-text" for="course">Enroll to:</label>
                                         </div>
+                                        <!-- current program of the student -->
                                         <select class="custom-select" id="course" name="course">
-                                            <option selected>...</option>
+                                            <option value="<?php echo $program; ?>" selected><?php echo $program; ?></option>
+                                        <!-- current program of the student -->
                                         <?php
                                             $courseList = "SELECT * FROM program";
                                             $courseListResult = mysqli_query($connect, $courseList);
@@ -329,8 +335,9 @@
                                         <div class="input-group-prepend">
                                             <label class="input-group-text" for="yearLevel">Year Level:</label>
                                         </div>
+                                        <!-- current year level of the student -->
                                         <select class="custom-select" id="yearLevel" name="yearLevel">
-                                            <option selected>...</option>
+                                            <option value="<?php echo $currentYearLevel; ?>" selected><?php echo $currentYearLevel; ?></option>
                                             <option value="First Year">First Year</option>
                                             <option value="Second Year">Second Year</option>
                                             <option value="Third Year">Third Year</option>
@@ -352,7 +359,7 @@
                                             <label class="input-group-text" for="semester">Semester:</label>
                                         </div>
                                         <select class="custom-select" id="semester" name="semester">
-                                            <option selected>...</option>
+                                            <option value="<?php echo $currentSemester;?>" selected><?php echo $currentSemester;?></option>
                                             <option value="First Semester">First Semester</option>
                                             <option value="Second Semester">Second Semester</option>
                                         </select>
