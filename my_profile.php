@@ -282,6 +282,10 @@
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Profile
                                 </a>
+                                <a class="dropdown-item" href="changepassword.php">
+                                    <i class="fas fa-lock fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Change Password
+                                </a>
                                 <a class="dropdown-item" href="#">
                                     <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Settings
@@ -311,7 +315,7 @@
 
                     <div class="row">
 
-                        <div class="col-lg-5">
+                        <div class="col-lg-8">
 
                             <!-- prfile name -->
                             <div class="card shadow mb-4">
@@ -321,19 +325,66 @@
                                 </div>
                                 <div class="card-body">
                                     <img src="..." alt="..." class="rounded">
-                                    <p>ID number: <?php echo $_SESSION['id'];?> </p>
-                                    <!-- <p>Username: <?php echo $_SESSION['username'];?> </p> -->
+                                    <!-- <p>ID number: <?php echo $_SESSION['id'];?> </p>
                                     <p>Email address: <?php echo $_SESSION['email_address'];?> </p>
                                     <p>Phone number: <?php echo $_SESSION['phonenumber'];?> </p>
                                     <p>Gender: <?php echo $_SESSION['gender'];?> </p>
                                     <p>Birthday: <?php echo $_SESSION['birthday'];?> </p>
-                                    <p>Address: <?php echo $_SESSION['address'];?> </p>
+                                    <p>Address: <?php echo $_SESSION['address'];?> </p> -->
+                                    <div class="form-group row">
+                                        <label for="staticStudentID" class="col-sm-2 col-form-label">Student ID:</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" readonly class="form-control-plaintext" id="staticStudentID" 
+                                                    value="<?php echo $_SESSION['id'];?>">
+                                            </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label for="staticEmailaddress" class="col-sm-2 col-form-label">Email address:</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" readonly class="form-control-plaintext" id="staticEmailaddress" 
+                                                    value="<?php echo $_SESSION['email_address'];?>">
+                                            </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label for="staticPhonenumber" class="col-sm-2 col-form-label">Phone number:</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" readonly class="form-control-plaintext" id="staticPhonenumber" 
+                                                    value="<?php echo $_SESSION['phonenumber'];?>">
+                                            </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label for="staticGender" class="col-sm-2 col-form-label">Gender:</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" readonly class="form-control-plaintext" id="staticGender" 
+                                                    value="<?php echo $_SESSION['gender'];?>">
+                                            </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label for="staticBirthday" class="col-sm-2 col-form-label">Birthday:</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" readonly class="form-control-plaintext" id="staticBirthday" 
+                                                    value="<?php echo $_SESSION['birthday'];?>">
+                                            </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label for="staticAddress" class="col-sm-2 col-form-label">Address:</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" readonly class="form-control-plaintext" id="staticAddress" 
+                                                    value="<?php echo $_SESSION['address'];?>">
+                                            </div>
+                                    </div>
+                                    
                                 </div>
                             </div>
 
                         </div>
 
-                        <div class="col-lg-7">
+                        <div class="col-lg-4">
 
                             <!-- college info -->
                             <div class="card shadow mb-4">
@@ -352,7 +403,7 @@
                                         //     $rowsProgramTable['coursename'];
                                         // }
                                     ?>
-                                    <p>Student Program: <?php $_SESSION['program'];?></p>
+                                    <p>Student Program: <?php echo $_SESSION['program'];?></p>
                                     <p>Year Level: <?php echo $_SESSION['yearlevel']; ?> </p>
                                     <p>Current Semester: <?php echo $_SESSION['semester'];?></p>
                                     <p>Max Units: </p>
