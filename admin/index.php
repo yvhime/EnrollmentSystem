@@ -715,7 +715,7 @@
             var options = {  
                 //title: 'Percentage of Male and Female Employee',  
                 //is3D:true,  
-                pieHole: 0.4  
+                pieHole: 1.4  
             };
             var chart = new google.visualization.PieChart(document.getElementById('pieChartProgram'));
             chart.draw(data, options);
