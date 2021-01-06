@@ -60,24 +60,17 @@
             <!-- Divider -->
             <hr class="sidebar-divider">
 
-            <!-- Heading -->
-            <div class="sidebar-heading">
-                Interface
-            </div>
-
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-                    aria-expanded="true" aria-controls="collapseTwo">
+                <a class="nav-link collapsed" href="grades.php" aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-cog"></i>
-                    <span>Components</span>
+                    <span>My Grades</span>
                 </a>
-                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Custom Components:</h6>
-                        <a class="collapse-item" href="buttons.html">Buttons</a>
-                    </div>
-                </div>
+
+                <a class="nav-link collapsed" href="subjectstaken.php" aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>Subjects Taken</span>
+                </a>
             </li>
 
             <!-- Divider -->
@@ -321,7 +314,10 @@
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
                                     <h6 class="m-0 font-weight-bold text-primary"> 
-                                        <?php echo $_SESSION['lastname'] . ", " . $_SESSION['firstname'] ;?></h6>
+                                        <?php echo $_SESSION['lastname'] . ", " . $_SESSION['firstname'] ;?>
+                                        <input type="submit" name="editProfile" id="editProfile" value="Edit Profile" class="btn btn-secondary btn-sm"
+                                        ">
+                                    </h6>
                                 </div>
                                 <div class="card-body">
                                     <img src="..." alt="..." class="rounded">
