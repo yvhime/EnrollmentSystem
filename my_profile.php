@@ -29,6 +29,9 @@
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
 
+    <!-- css for profile image -->
+    <link rel="stylesheet" href="css/">
+
 </head>
 
 <body id="page-top">
@@ -271,7 +274,7 @@
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="#">
+                                <a class="dropdown-item" href="my_profile.php">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Profile
                                 </a>
@@ -342,7 +345,19 @@
                                     </h6>
                                 </div>
                                 <div class="card-body">
-                                    <img src="..." alt="..." class="rounded">
+                                <?php
+                                    $studentID = $_SESSION["id"];
+                                    $imageQuery = mysqli_query($connect, "SELECT * FROM images WHERE student_id = '$studentID'");
+
+                                    while ($imageRow = mysqli_fetch_array($imageQuery)) {
+                                        echo "<div id='img_div'>";
+                                        echo "<img src='img/".$imageRow['profile_image']."' >"; // show image
+                                        //echo "<p>".$imageRow['path']."</p>"; // image path
+                                        echo "</div>";
+
+                                        $profileImageIcon = $imageRow['profile_image'];
+                                    }
+                                ?>
                                     <!-- <p>ID number: <?php echo $_SESSION['id'];?> </p>
                                     <p>Email address: <?php echo $_SESSION['email_address'];?> </p>
                                     <p>Phone number: <?php echo $_SESSION['phonenumber'];?> </p>
