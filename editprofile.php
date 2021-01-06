@@ -8,6 +8,31 @@
     if (!isset($_SESSION['email_address'])) {
         header("Location: login.php");
     }
+
+    $studentNumber = $_GET['studentnumber'];
+    //upload image codes
+    $message = "";
+    //if upload button is clicked
+    if (isset($_POST['upload'])) {
+        // Get image name
+        $image = $_FILES['profileImage']['name'];
+
+        // image file directory
+        $imagePath = "img/".basename($image);
+          
+        $sqlUpload = "INSERT INTO images (profile_image, path, student_id)
+                VALUES ('$image', '$imagePath', '$studentNumber')";
+
+        $uploadToProfile = mysqli_query($connect, $sqlUpload);
+
+        if (move_uploaded_file($_FILES['profileImage']['tmp_name'], $imagePath)) {
+            $message = "image uploaded";
+        } else {
+            $message = "failed";
+        }
+    }
+
+    $imageResult = mysqli_query($connect, "SELECT * FROM images WHERE student_id = '$studentNumber'"); //student_id = '$studentNumber'
 ?>
 
 <head>
@@ -28,6 +53,9 @@
 
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
+
+    <!-- css for profile image -->
+    <link href="css/profileimage.css" rel="stylesheet">
 
 </head>
 
@@ -266,12 +294,16 @@
                                     <?php echo $_SESSION['email_address']; ?>
                                 </span>
                                 <img class="img-profile rounded-circle"
-                                    src="img/undraw_profile.svg">
+                                    src="img/<?php $profileImageIcon; ?>">
+
+                                    <!-- <?php
+                                        echo "<img src='img/".$profileImageIcon."' >";
+                                    ?> -->
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="#">
+                                <a class="dropdown-item" href="my_profile.php">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Profile
                                 </a>
@@ -304,7 +336,7 @@
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-4 text-gray-800">My Profile</h1>
+                    <h1 class="h3 mb-4 text-gray-800">Edit Profilekskskskskskskkskskskskskskks</h1>
 
                     <div class="row">
 
@@ -314,47 +346,45 @@
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
                                     <h6 class="m-0 font-weight-bold text-primary"> 
-                                        <?php echo $_SESSION['lastname'] . ", " . $_SESSION['firstname'] ;?>
-                                        <form action="editprofile.php" method="get">
-                                            <input type='button' value='Edit Profile' class="btn btn-secondary btn-sm" 
-                                            onclick="window.location = 'editprofile.php?studentnumber=<?php echo $_SESSION['id'];?> ' ">
-                                        </form>
-
-                                        <!-- modal proper -->
-                                        <!-- <div id="myModal" class="modal fade" role="dialog">
-                                            <div class="modal-dialog">
-
-                                                <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                    <h4 class="modal-title">Modal Header</h4>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <p>Some text in the modal.</p>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                </div>
-                                                </div>
-
-                                            </div>
-                                        </div> -->
+                                        <!-- <?php echo $_SESSION['lastname'] . ", " . $_SESSION['firstname'] ;?> -->
                                     </h6>
                                 </div>
                                 <div class="card-body">
                                     <img src="..." alt="..." class="rounded">
-                                    <!-- <p>ID number: <?php echo $_SESSION['id'];?> </p>
-                                    <p>Email address: <?php echo $_SESSION['email_address'];?> </p>
-                                    <p>Phone number: <?php echo $_SESSION['phonenumber'];?> </p>
-                                    <p>Gender: <?php echo $_SESSION['gender'];?> </p>
-                                    <p>Birthday: <?php echo $_SESSION['birthday'];?> </p>
-                                    <p>Address: <?php echo $_SESSION['address'];?> </p> -->
+                                    <?php
+                                        while ($imageRow = mysqli_fetch_array($imageResult)) {
+                                            echo "<div id='img_div'>";
+                                            echo "<img src='img/".$imageRow['profile_image']."' >"; // show image
+                                            echo "<p>".$imageRow['path']."</p>"; // image path
+                                            echo "</div>";
+
+                                            $profileImageIcon = $imageRow['profile_image'];
+                                        }
+                                    ?>
+                                    <form action="" method="POST" enctype="multipart/form-data">
+                                        <input type="hidden" name="size" value="1000000">
+                                        <div>
+                                            <input type="file" name="profileImage">
+                                        </div>
+                                        <div>
+                                            <input type="submit" name="upload" value="Upload">
+                                        </div>
+                                    </form>
+                                    
                                     <div class="form-group row">
                                         <label for="staticStudentID" class="col-sm-2 col-form-label">Student ID:</label>
                                             <div class="col-sm-10">
                                                 <input type="text" readonly class="form-control-plaintext" id="staticStudentID" 
                                                     value="<?php echo $_SESSION['id'];?>">
                                             </div>
+                                    </div>
+
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="">Email address:</span>
+                                        </div>
+                                        <input type="text" class="form-control" placeholder="" 
+                                            value="<?php echo $subjectName; ?>" name="subjectName" id="subjectName">
                                     </div>
 
                                     <div class="form-group row">
@@ -365,6 +395,14 @@
                                             </div>
                                     </div>
 
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="">Phone number:</span>
+                                        </div>
+                                        <input type="text" class="form-control" placeholder="" 
+                                            value="<?php echo $subjectName; ?>" name="subjectName" id="subjectName">
+                                    </div>
+
                                     <div class="form-group row">
                                         <label for="staticPhonenumber" class="col-sm-2 col-form-label">Phone number:</label>
                                             <div class="col-sm-10">
@@ -373,20 +411,28 @@
                                             </div>
                                     </div>
 
-                                    <div class="form-group row">
+                                    <!-- <div class="form-group row">
                                         <label for="staticGender" class="col-sm-2 col-form-label">Gender:</label>
                                             <div class="col-sm-10">
                                                 <input type="text" readonly class="form-control-plaintext" id="staticGender" 
                                                     value="<?php echo $_SESSION['gender'];?>">
                                             </div>
-                                    </div>
+                                    </div> -->
 
-                                    <div class="form-group row">
+                                    <!-- <div class="form-group row">
                                         <label for="staticBirthday" class="col-sm-2 col-form-label">Birthday:</label>
                                             <div class="col-sm-10">
                                                 <input type="text" readonly class="form-control-plaintext" id="staticBirthday" 
                                                     value="<?php echo $_SESSION['birthday'];?>">
                                             </div>
+                                    </div> -->
+
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="">Address:</span>
+                                        </div>
+                                        <input type="text" class="form-control" placeholder="" 
+                                            value="<?php echo $subjectName; ?>" name="subjectName" id="subjectName">
                                     </div>
 
                                     <div class="form-group row">
