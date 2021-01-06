@@ -286,6 +286,15 @@
 
                         <div class="topbar-divider d-none d-sm-block"></div>
 
+                        <style>
+                            .avatar {
+                                vertical-align: middle;
+                                width: 40px;
+                                height: 40px;
+                                border-radius: 50%;
+                                }
+                        </style>
+
                         <!-- Nav Item - User Information -->
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
@@ -293,12 +302,20 @@
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">
                                     <?php echo $_SESSION['email_address']; ?>
                                 </span>
-                                <img class="img-profile rounded-circle"
-                                    src="img/<?php $profileImageIcon; ?>">
+                                <!-- <img class="img-profile rounded-circle"
+                                    src="img/<?php $profileImageIcon; ?>"> -->
 
-                                    <!-- <?php
-                                        echo "<img src='img/".$profileImageIcon."' >";
-                                    ?> -->
+                                    <!-- <img src="img/ <?php echo $profileImageIcon; ?> " alt="" class="avatar"> -->
+
+                                    <?php
+                                        // echo "<img src='img/".$imageRow['profile_image']."' class='avatar'>";
+                                        while ($imageIconRow = mysqli_fetch_array($imageResult)) {
+                                            echo "<div id='imageIcon'>";
+                                            echo "<img src='img/".$imageIconRow['profile_image']."' >"; // show image
+                                            //echo "<p>".$imageRow['path']."</p>"; // image path
+                                            echo "</div>";
+                                        }
+                                    ?>
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -350,12 +367,12 @@
                                     </h6>
                                 </div>
                                 <div class="card-body">
-                                    <img src="..." alt="..." class="rounded">
+                                    <!-- <img src="..." alt="..." class="rounded"> -->
                                     <?php
                                         while ($imageRow = mysqli_fetch_array($imageResult)) {
                                             echo "<div id='img_div'>";
                                             echo "<img src='img/".$imageRow['profile_image']."' >"; // show image
-                                            echo "<p>".$imageRow['path']."</p>"; // image path
+                                            //echo "<p>".$imageRow['path']."</p>"; // image path
                                             echo "</div>";
 
                                             $profileImageIcon = $imageRow['profile_image'];
