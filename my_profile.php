@@ -8,6 +8,10 @@
     if (!isset($_SESSION['email_address'])) {
         header("Location: login.php");
     }
+
+    //check query on profile image for reference on variable
+    $studentIconID = $_SESSION['id'];
+    $imageResult = mysqli_query($connect, "SELECT * FROM images WHERE student_id = '$studentIconID'"); //student_id = '$studentNumber'
 ?>
 
 <head>
@@ -268,8 +272,22 @@
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">
                                     <?php echo $_SESSION['email_address']; ?>
                                 </span>
-                                <img class="img-profile rounded-circle"
-                                    src="img/undraw_profile.svg">
+                                <!-- <img class="img-profile rounded-circle"
+                                    src="img/undraw_profile.svg"> -->
+
+                                    <?php
+                                        while ($imageIconRow = mysqli_fetch_array($imageResult)) {
+                                            if ($imageIconRow['profile_image'] == NULL) {
+                                                echo "<img src='img/undraw_profile.svg' 
+                                                    class='img-profile rounded-circle'>";
+                                            } else {
+                                                echo "<img src='img/".$imageIconRow['profile_image']."' 
+                                                class='img-profile rounded-circle'>"; // show image
+                                            }
+                                            // echo "<img src='img/".$imageIconRow['profile_image']."' 
+                                            // class='img-profile rounded-circle'>"; // show image
+                                        }
+                                    ?>
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
