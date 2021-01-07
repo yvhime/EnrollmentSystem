@@ -39,6 +39,29 @@
     }
 
     $imageResult = mysqli_query($connect, "SELECT * FROM images WHERE student_id = '$studentNumber'"); //student_id = '$studentNumber'
+
+    //update personal info
+    $studentInfoID = $_SESSION['id'];
+    if (isset($_POST['updatePersonalInfo'])) {
+        $updateEmailAddress = $_POST['updateEmailAddress'];
+        $updatePhoneNumber = $_POST['updatePhoneNumber'];
+        $updateAddress = $_POST['updateAddress'];
+        echo $updateEmailAddress . $updatePhoneNumber . $updateAddress;
+
+        $updateStudentInfo = mysqli_query($connect, "UPDATE users SET 
+            email_address = '".$updateEmailAddress."',
+            phonenumber = '".$updatePhoneNumber."',
+            address = '".$updateAddress."'
+            WHERE $studentInfoID = id");
+
+echo "<script> alert('Subject updated.'); </script>";
+        //echo "<script> window.location='my_profile.php' </script>";
+
+        // if (mysqli_query($connect, $updateStudentInfo)) {
+        //     echo "<script> alert('Subject updated.'); </script>";
+        //     echo "<script> window.location='my_profile.php' </script>";
+        // }
+    }
 ?>
 
 <head>
@@ -305,9 +328,9 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <!-- <span class="mr-2 d-none d-lg-inline text-gray-600 small">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">
                                     <?php echo $_SESSION['email_address']; ?>
-                                </span> -->
+                                </span>
                                 <!-- <img class="img-profile rounded-circle"
                                     src="img/<?php $profileImageIcon; ?>"> -->
 
@@ -316,16 +339,13 @@
                                     <?php
                                         // echo "<img src='img/".$imageRow['profile_image']."' class='avatar'>";
                                         while ($imageIconRow = mysqli_fetch_array($imageResult)) {
-                                            echo "<div id='imageIcon'>";
-                                            echo "<img src='img/".$imageIconRow['profile_image']."' >"; // show image
+                                            //echo "<div id=''>"; // imageIcon
+                                            echo "<img src='img/".$imageIconRow['profile_image']."' 
+                                            class='img-profile rounded-circle'>"; // show image
                                             //echo "<p>".$imageRow['path']."</p>"; // image path
-                                            echo "</div>";
+                                            //echo "</div>";
                                         }
                                     ?>
-
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">
-                                    <?php echo $_SESSION['email_address']; ?>
-                                </span>
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -373,7 +393,7 @@
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
                                     <h6 class="m-0 font-weight-bold text-primary"> 
-                                        <!-- <?php echo $_SESSION['lastname'] . ", " . $_SESSION['firstname'] ;?> -->
+                                        Student ID: <?php echo $_SESSION['id'];?>
                                     </h6>
                                 </div>
                                 <div class="card-body">
@@ -398,45 +418,46 @@
                                         </div>
                                     </form>
                                     
-                                    <div class="form-group row">
+                                    <!-- <div class="form-group row">
                                         <label for="staticStudentID" class="col-sm-2 col-form-label">Student ID:</label>
                                             <div class="col-sm-10">
                                                 <input type="text" readonly class="form-control-plaintext" id="staticStudentID" 
                                                     value="<?php echo $_SESSION['id'];?>">
                                             </div>
-                                    </div>
+                                    </div> -->
 
+                                <form action="" method="POST">
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="">Email address:</span>
                                         </div>
-                                        <input type="text" class="form-control" placeholder="" 
-                                            value="<?php echo $subjectName; ?>" name="subjectName" id="subjectName">
+                                        <input type="email" class="form-control" placeholder="" 
+                                            value="<?php echo $_SESSION['email_address']; ?>" name="updateEmailAddress" id="updateEmailAddress">
                                     </div>
 
-                                    <div class="form-group row">
+                                    <!-- <div class="form-group row">
                                         <label for="staticEmailaddress" class="col-sm-2 col-form-label">Email address:</label>
                                             <div class="col-sm-10">
                                                 <input type="text" readonly class="form-control-plaintext" id="staticEmailaddress" 
                                                     value="<?php echo $_SESSION['email_address'];?>">
                                             </div>
-                                    </div>
+                                    </div> -->
 
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="">Phone number:</span>
                                         </div>
                                         <input type="text" class="form-control" placeholder="" 
-                                            value="<?php echo $subjectName; ?>" name="subjectName" id="subjectName">
+                                            value="<?php echo $_SESSION['phonenumber']; ?>" name="updatePhoneNumber" id="updatePhoneNumber">
                                     </div>
 
-                                    <div class="form-group row">
+                                    <!-- <div class="form-group row">
                                         <label for="staticPhonenumber" class="col-sm-2 col-form-label">Phone number:</label>
                                             <div class="col-sm-10">
                                                 <input type="text" readonly class="form-control-plaintext" id="staticPhonenumber" 
                                                     value="<?php echo $_SESSION['phonenumber'];?>">
                                             </div>
-                                    </div>
+                                    </div> -->
 
                                     <!-- <div class="form-group row">
                                         <label for="staticGender" class="col-sm-2 col-form-label">Gender:</label>
@@ -459,18 +480,29 @@
                                             <span class="input-group-text" id="">Address:</span>
                                         </div>
                                         <input type="text" class="form-control" placeholder="" 
-                                            value="<?php echo $subjectName; ?>" name="subjectName" id="subjectName">
+                                            value="<?php echo $_SESSION['address']; ?>" name="updateAddress" id="updateAddress">
                                     </div>
 
-                                    <div class="form-group row">
+                                    <!-- <div class="form-group row">
                                         <label for="staticAddress" class="col-sm-2 col-form-label">Address:</label>
                                             <div class="col-sm-10">
                                                 <input type="text" readonly class="form-control-plaintext" id="staticAddress" 
                                                     value="<?php echo $_SESSION['address'];?>">
                                             </div>
-                                    </div>
+                                    </div> -->
                                     
                                 </div>
+                                <div class="card-footer py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary"> 
+                                        <input type="submit" class="btn btn-secondary btn-sm" 
+                                            name="updatePersonalInfo" id="updatePersonalInfo" value="Update">
+                                </form>
+                                        <input type="submit" class="btn btn-secondary btn-sm" 
+                                            name="cancelEdit" id="cancelEdit" value="Cancel" 
+                                            onclick="window.location = 'my_profile.php'">
+                                    </h6>
+                                </div>
+                                
                             </div>
 
                         </div>
