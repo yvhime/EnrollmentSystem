@@ -28,3 +28,6 @@ img{
     /* round the edges to a circle with border radius 1/2 container size */
     border-radius: 50%;
 }
+#imagePreview {
+    height: 50px;
+}

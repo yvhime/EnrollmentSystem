@@ -12,6 +12,16 @@
     //check query on profile image for reference on variable
     $studentIconID = $_SESSION['id'];
     $imageResult = mysqli_query($connect, "SELECT * FROM images WHERE student_id = '$studentIconID'"); //student_id = '$studentNumber'
+
+    $viewStudentInfo = "SELECT * FROM users WHERE $studentIconID = id";
+    $queryStudentInfo = mysqli_query($connect, $viewStudentInfo);
+
+    while ($rowStudentInfo = mysqli_fetch_array($queryStudentInfo)) {
+        $updatedStudentID = $rowStudentInfo['id'];
+        $updatedEmailAddress = $rowStudentInfo['email_address'];
+        $updatedPhoneNumber = $rowStudentInfo['phonenumber'];
+        $updatedAddress = $rowStudentInfo['address'];
+    }
 ?>
 
 <head>
@@ -368,8 +378,8 @@
                                     $imageQuery = mysqli_query($connect, "SELECT * FROM images WHERE student_id = '$studentID'");
 
                                     while ($imageRow = mysqli_fetch_array($imageQuery)) {
-                                        echo "<div id='img_div'>";
-                                        echo "<img src='img/".$imageRow['profile_image']."' >"; // show image
+                                        echo "<div id=''>";
+                                        echo "<img src='img/".$imageRow['profile_image']."' id='imagePreview'>"; // show image
                                         //echo "<p>".$imageRow['path']."</p>"; // image path
                                         echo "</div>";
 
@@ -394,7 +404,7 @@
                                         <label for="staticEmailaddress" class="col-sm-2 col-form-label">Email address:</label>
                                             <div class="col-sm-10">
                                                 <input type="text" readonly class="form-control-plaintext" id="staticEmailaddress" 
-                                                    value="<?php echo $_SESSION['email_address'];?>">
+                                                    value="<?php echo $updatedEmailAddress;?>">
                                             </div>
                                     </div>
 
@@ -402,7 +412,7 @@
                                         <label for="staticPhonenumber" class="col-sm-2 col-form-label">Phone number:</label>
                                             <div class="col-sm-10">
                                                 <input type="text" readonly class="form-control-plaintext" id="staticPhonenumber" 
-                                                    value="<?php echo $_SESSION['phonenumber'];?>">
+                                                    value="<?php echo $updatedPhoneNumber;?>">
                                             </div>
                                     </div>
 
@@ -426,7 +436,7 @@
                                         <label for="staticAddress" class="col-sm-2 col-form-label">Address:</label>
                                             <div class="col-sm-10">
                                                 <input type="text" readonly class="form-control-plaintext" id="staticAddress" 
-                                                    value="<?php echo $_SESSION['address'];?>">
+                                                    value="<?php echo $updatedAddress;?>">
                                             </div>
                                     </div>
                                     
