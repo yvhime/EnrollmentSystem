@@ -48,19 +48,30 @@
         $updateAddress = $_POST['updateAddress'];
         echo $updateEmailAddress . $updatePhoneNumber . $updateAddress;
 
+        
+
         $updateStudentInfo = mysqli_query($connect, "UPDATE users SET 
             email_address = '".$updateEmailAddress."',
             phonenumber = '".$updatePhoneNumber."',
             address = '".$updateAddress."'
             WHERE $studentInfoID = id");
 
-echo "<script> alert('Subject updated.'); </script>";
-        //echo "<script> window.location='my_profile.php' </script>";
+        echo "<script> alert('Personal information updated.'); </script>";
+        echo "<script> window.location='my_profile.php' </script>";
 
         // if (mysqli_query($connect, $updateStudentInfo)) {
         //     echo "<script> alert('Subject updated.'); </script>";
         //     echo "<script> window.location='my_profile.php' </script>";
         // }
+    }
+
+    $viewStudentInfo = "SELECT * FROM users WHERE $studentInfoID = id";
+    $queryStudentInfo = mysqli_query($connect, $viewStudentInfo);
+
+    while ($rowStudentInfo = mysqli_fetch_array($queryStudentInfo)) {
+        $updatedEmailAddress = $rowStudentInfo['email_address'];
+        $updatedPhoneNumber = $rowStudentInfo['phonenumber'];
+        $updatedAddress = $rowStudentInfo['address'];
     }
 ?>
 
@@ -383,7 +394,7 @@ echo "<script> alert('Subject updated.'); </script>";
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-4 text-gray-800">Edit Profilekskskskskskskkskskskskskskks</h1>
+                    <h1 class="h3 mb-4 text-gray-800">Edit Profile</h1>
 
                     <div class="row">
 
@@ -432,7 +443,7 @@ echo "<script> alert('Subject updated.'); </script>";
                                             <span class="input-group-text" id="">Email address:</span>
                                         </div>
                                         <input type="email" class="form-control" placeholder="" 
-                                            value="<?php echo $_SESSION['email_address']; ?>" name="updateEmailAddress" id="updateEmailAddress">
+                                            value="<?php echo $updatedEmailAddress ?>" name="updateEmailAddress" id="updateEmailAddress">
                                     </div>
 
                                     <!-- <div class="form-group row">
@@ -448,7 +459,7 @@ echo "<script> alert('Subject updated.'); </script>";
                                             <span class="input-group-text" id="">Phone number:</span>
                                         </div>
                                         <input type="text" class="form-control" placeholder="" 
-                                            value="<?php echo $_SESSION['phonenumber']; ?>" name="updatePhoneNumber" id="updatePhoneNumber">
+                                            value="<?php echo $updatedPhoneNumber; ?>" name="updatePhoneNumber" id="updatePhoneNumber">
                                     </div>
 
                                     <!-- <div class="form-group row">
@@ -480,7 +491,7 @@ echo "<script> alert('Subject updated.'); </script>";
                                             <span class="input-group-text" id="">Address:</span>
                                         </div>
                                         <input type="text" class="form-control" placeholder="" 
-                                            value="<?php echo $_SESSION['address']; ?>" name="updateAddress" id="updateAddress">
+                                            value="<?php echo $updatedAddress; ?>" name="updateAddress" id="updateAddress">
                                     </div>
 
                                     <!-- <div class="form-group row">
@@ -510,7 +521,7 @@ echo "<script> alert('Subject updated.'); </script>";
                         <div class="col-lg-12">
 
                             <!-- college info -->
-                            <div class="card shadow mb-4">
+                            <!-- <div class="card shadow mb-4">
                                 <div class="card-header py-3">
                                     <h6 class="m-0 font-weight-bold text-primary"> 
                                         Student Details    
@@ -518,13 +529,7 @@ echo "<script> alert('Subject updated.'); </script>";
                                 </div>
                                 <div class="card-body">
                                     <?php
-                                        // $programTable = "SELECT * FROM program";
-                                        // $checkProgramTable = mysqli_query($connect, $programTable);
-                                        // while ($rowsProgramTable = mysqli_fetch_array($checkProgramTable)) {
-                                        //     $rowsProgramTable['id'];
-                                        //     $rowsProgramTable['degree'];
-                                        //     $rowsProgramTable['coursename'];
-                                        // }
+                                        
                                     ?>
                                     <p>Student Program: <?php echo $_SESSION['program'];?></p>
                                     <p>Year Level: <?php echo $_SESSION['yearlevel']; ?> </p>
@@ -532,7 +537,7 @@ echo "<script> alert('Subject updated.'); </script>";
                                     <p>Max Units: </p>
                                     <p>Current Units: </p>
                                 </div>
-                            </div>
+                            </div> -->
 
                         </div>
 
