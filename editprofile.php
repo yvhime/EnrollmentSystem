@@ -20,8 +20,14 @@
         // image file directory
         $imagePath = "img/".basename($image);
           
-        $sqlUpload = "INSERT INTO images (profile_image, path, student_id)
-                VALUES ('$image', '$imagePath', '$studentNumber')";
+        // $sqlUpload = "INSERT INTO images (profile_image, path, student_id)
+        //         VALUES ('$image', '$imagePath', '$studentNumber')";
+
+        $sqlUpload = "UPDATE images SET profile_image = '".$image."',
+            path = '".$imagePath."',
+            student_id = '".$studentNumber."'
+            WHERE $studentNumber = student_id
+        ";
 
         $uploadToProfile = mysqli_query($connect, $sqlUpload);
 
@@ -299,9 +305,9 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">
+                                <!-- <span class="mr-2 d-none d-lg-inline text-gray-600 small">
                                     <?php echo $_SESSION['email_address']; ?>
-                                </span>
+                                </span> -->
                                 <!-- <img class="img-profile rounded-circle"
                                     src="img/<?php $profileImageIcon; ?>"> -->
 
@@ -316,6 +322,10 @@
                                             echo "</div>";
                                         }
                                     ?>
+
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">
+                                    <?php echo $_SESSION['email_address']; ?>
+                                </span>
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
