@@ -10,7 +10,16 @@
     }
 
     $studentNumber = $_GET['studentnumber'];
-    
+    $imageResult = mysqli_query($connect, "SELECT * FROM images WHERE student_id = '$studentNumber'"); //student_id = '$studentNumber'
+    $imageProfileImage = "";
+    while ($rowImageQuery = mysqli_fetch_array($imageResult)) {
+        $imageID = $rowImageQuery['id'];
+        $imageProfileImage = $rowImageQuery['profile_image'];
+        $imagePathImage = $rowImageQuery['path'];
+        $imageStudentID = $rowImageQuery['student_id'];
+        //echo $imageID.$imageProfileImage.$imagePathImage.$imageStudentID;
+    }
+
     // Initialize message variable
     $msg = "";
     // If upload button is clicked ...
@@ -24,14 +33,32 @@
         $imagePath = "img/".basename($image);
 
         if ($image != NULL) {
-            $sql = "INSERT INTO images (profile_image, path, student_id) VALUES ('$image', '$imagePath', '$studentNumber')";
-            // execute query
-            mysqli_query($connect, $sql);
+            if ($imageProfileImage == NULL) {
+                $sqlUploadInsert = "INSERT INTO images (profile_image, path, student_id) VALUES ('$image', '$imagePath', '$studentNumber')";
+                // execute query
+                mysqli_query($connect, $sqlUploadInsert);
 
-            if (move_uploaded_file($_FILES['profileImage']['tmp_name'], $imagePath)) {
-                $msg = "Image uploaded successfully";
-            }else{
-                $msg = "Failed to upload image";
+                if (move_uploaded_file($_FILES['profileImage']['tmp_name'], $imagePath)) {
+                    $msg = "Image uploaded successfully";
+                }else{
+                    $msg = "Failed to upload image";
+                }
+                echo "<script>alert('Profile picture successfully uploaded.');</script>";
+            } else {
+                $sqlUploadUpdate = "UPDATE images SET profile_image = '".$image."',
+                    path = '".$imagePath."',
+                    student_id = '".$studentNumber."'
+                    WHERE $studentNumber = student_id";
+
+                // execute query
+                mysqli_query($connect, $sqlUploadUpdate);
+
+                if (move_uploaded_file($_FILES['profileImage']['tmp_name'], $imagePath)) {
+                    $msg = "Image uploaded successfully";
+                } else {
+                    $msg = "Failed to upload image";
+                }
+                echo "<script>alert('Profile picture successfully updated.');</script>";
             }
         }
         else {
@@ -80,8 +107,6 @@
         // }
         //-------------------------------------------------------------------
     }
-
-    $imageResult = mysqli_query($connect, "SELECT * FROM images WHERE student_id = '$studentNumber'"); //student_id = '$studentNumber'
 
     //update personal info
     $studentInfoID = $_SESSION['id'];
@@ -383,18 +408,15 @@
                                 <!-- <img class="img-profile rounded-circle"
                                     src="img/<?php $profileImageIcon; ?>"> -->
 
-                                    <!-- <img src="img/ <?php echo $profileImageIcon; ?> " alt="" class="avatar"> -->
-
-                                    <?php
-                                        // echo "<img src='img/".$imageRow['profile_image']."' class='avatar'>";
-                                        while ($imageIconRow = mysqli_fetch_array($imageResult)) {
-                                            //echo "<div id=''>"; // imageIcon
-                                            echo "<img src='img/".$imageIconRow['profile_image']."' 
-                                            class='img-profile rounded-circle'>"; // show image
-                                            //echo "<p>".$imageRow['path']."</p>"; // image path
-                                            //echo "</div>";
-                                        }
-                                    ?>
+                                <?php
+                                    if ($imageProfileImage == NULL) {
+                                        echo "<img src='img/undraw_profile.svg' 
+                                        class='img-profile rounded-circle'>";
+                                    } else {
+                                        echo "<img src='img/".$imageProfileImage."' 
+                                        class='img-profile rounded-circle'>"; // show image
+                                    }
+                                ?>
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -436,7 +458,35 @@
 
                     <div class="row">
 
-                        <div class="col-lg-12">
+                    <div class="col-lg-4">
+
+                    <!-- college info -->
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary"> 
+                                Profile Picture    
+                            </h6>
+                        </div>
+                        <div class="card-body">
+                            <img class="img-profile rounded-circle"
+                                    src="img/undraw_profile.svg">
+                        </div>
+                        <div class="card-footer py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">
+                                <div>
+                                <form action="" method="POST" enctype="multipart/form-data">
+                                    <input type="hidden" name="size" value="1000000">
+                                    <input type="file" name="profileImage" class="">
+                                    <input type="submit" name="upload" value="Update" class="btn btn-secondary btn-sm">
+                                </form>
+                                </div>
+                            </h6>
+                        </div>
+                    </div>
+
+                    </div>
+
+                        <div class="col-lg-8">
 
                             <!-- prfile name -->
                             <div class="card shadow mb-4">
@@ -457,19 +507,15 @@
                                             $profileImageIcon = $imageRow['profile_image'];
                                         }
                                     ?>
-                                <form action="" method="POST" enctype="multipart/form-data">
+                                <!-- <form action="" method="POST" enctype="multipart/form-data">
                                     <input type="hidden" name="size" value="1000000">
                                         <div>
                                             <input type="file" name="profileImage">
                                         </div>
-                                        <!-- <div class="custom-file">
-                                            <input type="file" name="image" class="custom-file-input" id="customFile">
-                                            <label class="custom-file-label" for="customFile">Choose file</label>
-                                        </div> -->
                                         <div>
                                             <input type="submit" name="upload" value="POST">
                                         </div>
-                                </form>
+                                </form> -->
                                     
                                     <!-- <div class="form-group row">
                                         <label for="staticStudentID" class="col-sm-2 col-form-label">Student ID:</label>
@@ -557,29 +603,6 @@
                                 </div>
                                 
                             </div>
-
-                        </div>
-
-                        <div class="col-lg-12">
-
-                            <!-- college info -->
-                            <!-- <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary"> 
-                                        Student Details    
-                                    </h6>
-                                </div>
-                                <div class="card-body">
-                                    <?php
-                                        
-                                    ?>
-                                    <p>Student Program: <?php echo $_SESSION['program'];?></p>
-                                    <p>Year Level: <?php echo $_SESSION['yearlevel']; ?> </p>
-                                    <p>Current Semester: <?php echo $_SESSION['semester'];?></p>
-                                    <p>Max Units: </p>
-                                    <p>Current Units: </p>
-                                </div>
-                            </div> -->
 
                         </div>
 
