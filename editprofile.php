@@ -10,32 +10,75 @@
     }
 
     $studentNumber = $_GET['studentnumber'];
-    //upload image codes
-    $message = "";
-    //if upload button is clicked
-    if (isset($_POST['upload'])) { // upload
+    
+    // Initialize message variable
+    $msg = "";
+    // If upload button is clicked ...
+    if (isset($_POST['upload'])) {
         // Get image name
         $image = $_FILES['profileImage']['name'];
+        // Get text
+        //$image_text = mysqli_real_escape_string($db, $_POST['image_text']);
 
         // image file directory
         $imagePath = "img/".basename($image);
-          
-        // $sqlUpload = "INSERT INTO images (profile_image, path, student_id)
-        //         VALUES ('$image', '$imagePath', '$studentNumber')";
 
-        $sqlUpload = "UPDATE images SET profile_image = '".$image."',
-            path = '".$imagePath."',
-            student_id = '".$studentNumber."'
-            WHERE $studentNumber = student_id
-        ";
+        if ($image != NULL) {
+            $sql = "INSERT INTO images (profile_image, path, student_id) VALUES ('$image', '$imagePath', '$studentNumber')";
+            // execute query
+            mysqli_query($connect, $sql);
 
-        $uploadToProfile = mysqli_query($connect, $sqlUpload);
-
-        if (move_uploaded_file($_FILES['profileImage']['tmp_name'], $imagePath)) {
-            $message = "image uploaded";
-        } else {
-            $message = "failed";
+            if (move_uploaded_file($_FILES['profileImage']['tmp_name'], $imagePath)) {
+                $msg = "Image uploaded successfully";
+            }else{
+                $msg = "Failed to upload image";
+            }
         }
+        else {
+            echo "<script>alert('Select your profile picture.');</script>";
+        }
+
+
+        // $sql = "INSERT INTO images (profile_image, path, student_id) VALUES ('$image', '$imagePath', '$studentNumber')";
+        // // execute query
+        // mysqli_query($connect, $sql);
+
+        // if (move_uploaded_file($_FILES['profileImage']['tmp_name'], $imagePath)) {
+        //     $msg = "Image uploaded successfully";
+        // }else{
+        //     $msg = "Failed to upload image";
+        // }
+
+        //-------------------------------------------------------------------
+        // if ($studentNumber == NULL) {
+        //     $sqlUploadInsert = "INSERT INTO images (profile_image, path, student_id) 
+        //         VALUES ('$image', '$imagePath', '$studentNumber')";
+        //     // execute query
+        //     mysqli_query($connect, $sqlUploadInsert);
+
+        //     if (move_uploaded_file($_FILES['profileImage']['tmp_name'], $imagePath)) {
+        //         $msg = "Image uploaded successfully";
+        //     } else {
+        //         $msg = "Failed to upload image";
+        //     }
+
+        // } 
+        // else {
+        //     $sqlUploadUpdate = "UPDATE images SET profile_image = '".$image."',
+        //         path = '".$imagePath."',
+        //         student_id = '".$studentNumber."'
+        //         WHERE $studentNumber = student_id";
+
+        //     // execute query
+        //     mysqli_query($connect, $sqlUploadUpdate);
+
+        //     if (move_uploaded_file($_FILES['profileImage']['tmp_name'], $imagePath)) {
+        //         $msg = "Image uploaded successfully";
+        //     } else {
+        //         $msg = "Failed to upload image";
+        //     }
+        // }
+        //-------------------------------------------------------------------
     }
 
     $imageResult = mysqli_query($connect, "SELECT * FROM images WHERE student_id = '$studentNumber'"); //student_id = '$studentNumber'
@@ -46,7 +89,7 @@
         $updateEmailAddress = $_POST['updateEmailAddress'];
         $updatePhoneNumber = $_POST['updatePhoneNumber'];
         $updateAddress = $_POST['updateAddress'];
-        echo $updateEmailAddress . $updatePhoneNumber . $updateAddress;
+        //echo $updateEmailAddress . $updatePhoneNumber . $updateAddress;
 
         
 
@@ -58,38 +101,6 @@
 
         echo "<script> alert('Personal information updated.'); </script>";
         echo "<script> window.location='my_profile.php' </script>";
-
-        // if (mysqli_query($connect, $updateStudentInfo)) {
-        //     echo "<script> alert('Subject updated.'); </script>";
-        //     echo "<script> window.location='my_profile.php' </script>";
-        // }
-
-        //---------------------------------------------------------------------//
-
-        // Get image name
-        // $image = $_FILES['profileImage']['name'];
-
-        // // image file directory
-        // $imagePath = "img/".basename($image);
-          
-        // // $sqlUpload = "INSERT INTO images (profile_image, path, student_id)
-        // //         VALUES ('$image', '$imagePath', '$studentNumber')";
-
-        // $sqlUpload = "UPDATE images SET profile_image = '".$image."',
-        //     path = '".$imagePath."',
-        //     student_id = '".$studentNumber."'
-        //     WHERE $studentNumber = student_id
-        // ";
-
-        // $uploadToProfile = mysqli_query($connect, $sqlUpload);
-
-        // if (move_uploaded_file($_FILES['profileImage']['tmp_name'], $imagePath)) {
-        //     $message = "image uploaded";
-        // } else {
-        //     $message = "failed";
-        // }
-
-        //---------------------------------------------------------------------//
     }
 
     $viewStudentInfo = "SELECT * FROM users WHERE $studentInfoID = id";
@@ -451,10 +462,10 @@
                                         <div>
                                             <input type="file" name="profileImage">
                                         </div>
-                                        <div class="custom-file">
-                                            <input type="file" name="profileImage" class="custom-file-input" id="customFile">
+                                        <!-- <div class="custom-file">
+                                            <input type="file" name="image" class="custom-file-input" id="customFile">
                                             <label class="custom-file-label" for="customFile">Choose file</label>
-                                        </div>
+                                        </div> -->
                                         <div>
                                             <input type="submit" name="upload" value="POST">
                                         </div>
