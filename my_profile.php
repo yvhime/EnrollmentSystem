@@ -18,6 +18,7 @@
 
     while ($rowStudentInfo = mysqli_fetch_array($queryStudentInfo)) {
         $updatedStudentID = $rowStudentInfo['id'];
+        $updatedStudentName = $rowStudentInfo['lastname'] . ", " . $rowStudentInfo['firstname'];
         $updatedEmailAddress = $rowStudentInfo['email_address'];
         $updatedPhoneNumber = $rowStudentInfo['phonenumber'];
         $updatedAddress = $rowStudentInfo['address'];
@@ -335,7 +336,7 @@
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-4 text-gray-800">My Profile</h1>
+                    <h1 class="h3 mb-4 text-gray-800"></h1>
 
                     <div class="row">
 
@@ -344,32 +345,13 @@
                             <!-- prfile name -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary"> 
-                                        <?php echo $_SESSION['lastname'] . ", " . $_SESSION['firstname'] ;?>
-                                        <form action="editprofile.php" method="get">
+                                    <h6 class="m-0 font-weight-bold text-primary">
+                                        Personal Information
+                                        <?php //echo $_SESSION['lastname'] . ", " . $_SESSION['firstname'] ;?>
+                                        <!-- <form action="editprofile.php" method="get">
                                             <input type='button' value='Edit Profile' class="btn btn-secondary btn-sm" 
                                             onclick="window.location = 'editprofile.php?studentnumber=<?php echo $_SESSION['id'];?> ' ">
-                                        </form>
-
-                                        <!-- modal proper -->
-                                        <!-- <div id="myModal" class="modal fade" role="dialog">
-                                            <div class="modal-dialog">
-
-                                                <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                    <h4 class="modal-title">Modal Header</h4>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <p>Some text in the modal.</p>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                </div>
-                                                </div>
-
-                                            </div>
-                                        </div> -->
+                                        </form> -->
                                     </h6>
                                 </div>
                                 <div class="card-body">
@@ -381,6 +363,7 @@
                                         echo "<div id=''>";
                                         echo "<img src='img/".$imageRow['profile_image']."' id='imagePreview'>"; // show image
                                         //echo "<p>".$imageRow['path']."</p>"; // image path
+                                        echo "lol";
                                         echo "</div>";
 
                                         $profileImageIcon = $imageRow['profile_image'];
@@ -397,6 +380,14 @@
                                             <div class="col-sm-10">
                                                 <input type="text" readonly class="form-control-plaintext" id="staticStudentID" 
                                                     value="<?php echo $_SESSION['id'];?>">
+                                            </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label for="staticStudentName" class="col-sm-2 col-form-label">Student name:</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" readonly class="form-control-plaintext" id="staticStudentName" 
+                                                    value="<?php echo $updatedStudentName;?>">
                                             </div>
                                     </div>
 
@@ -441,6 +432,16 @@
                                     </div>
                                     
                                 </div>
+                                <div class="card-footer py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary"> 
+                                        <!-- <input type="submit" class="btn btn-secondary btn-sm" 
+                                            name="updatePersonalInfo" id="updatePersonalInfo" value="Edit Profile"> -->
+                                        <form action="editprofile.php" method="get">
+                                            <input type='button' value='Update Personal Information' class="btn btn-secondary btn-sm" 
+                                            onclick="window.location = 'editprofile.php?studentnumber=<?php echo $_SESSION['id'];?> ' ">
+                                        </form>
+                                    </h6>
+                                </div>
                             </div>
 
                         </div>
@@ -451,7 +452,7 @@
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
                                     <h6 class="m-0 font-weight-bold text-primary"> 
-                                        Student Details    
+                                        Student Information    
                                     </h6>
                                 </div>
                                 <div class="card-body">
@@ -464,11 +465,50 @@
                                         //     $rowsProgramTable['coursename'];
                                         // }
                                     ?>
-                                    <p>Student Program: <?php echo $_SESSION['program'];?></p>
+                                    <!-- <p>Student Program: <?php echo $_SESSION['program'];?></p>
                                     <p>Year Level: <?php echo $_SESSION['yearlevel']; ?> </p>
-                                    <p>Current Semester: <?php echo $_SESSION['semester'];?></p>
+                                    <p>Current Semester: <?php echo $_SESSION['semester'];?></p> -->
                                     <p>Max Units: </p>
                                     <p>Current Units: </p>
+                                    <div class="form-group row">
+                                        <label for="staticProgram" class="col-sm-2 col-form-label">Student program:</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" readonly class="form-control-plaintext" id="staticProgram" 
+                                                    value="<?php echo $_SESSION['program'];?>">
+                                            </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label for="staticYearLevel" class="col-sm-2 col-form-label">Year level:</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" readonly class="form-control-plaintext" id="staticYearLevel" 
+                                                    value="<?php echo $_SESSION['yearlevel'];?>">
+                                            </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label for="staticSemester" class="col-sm-2 col-form-label">Current Semester:</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" readonly class="form-control-plaintext" id="staticSemester" 
+                                                    value="<?php echo $_SESSION['semester'];?>">
+                                            </div>
+                                    </div>
+
+                                    <!-- <div class="form-group row">
+                                        <label for="staticProgram" class="col-sm-2 col-form-label">Student program:</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" readonly class="form-control-plaintext" id="staticProgram" 
+                                                    value="<?php echo $_SESSION['program'];?>">
+                                            </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label for="staticProgram" class="col-sm-2 col-form-label">Student program:</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" readonly class="form-control-plaintext" id="staticProgram" 
+                                                    value="<?php echo $_SESSION['program'];?>">
+                                            </div>
+                                    </div> -->
                                 </div>
                             </div>
 

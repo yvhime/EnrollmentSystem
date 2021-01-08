@@ -13,7 +13,7 @@
     //upload image codes
     $message = "";
     //if upload button is clicked
-    if (isset($_POST['upload'])) {
+    if (isset($_POST['upload'])) { // upload
         // Get image name
         $image = $_FILES['profileImage']['name'];
 
@@ -63,6 +63,33 @@
         //     echo "<script> alert('Subject updated.'); </script>";
         //     echo "<script> window.location='my_profile.php' </script>";
         // }
+
+        //---------------------------------------------------------------------//
+
+        // Get image name
+        // $image = $_FILES['profileImage']['name'];
+
+        // // image file directory
+        // $imagePath = "img/".basename($image);
+          
+        // // $sqlUpload = "INSERT INTO images (profile_image, path, student_id)
+        // //         VALUES ('$image', '$imagePath', '$studentNumber')";
+
+        // $sqlUpload = "UPDATE images SET profile_image = '".$image."',
+        //     path = '".$imagePath."',
+        //     student_id = '".$studentNumber."'
+        //     WHERE $studentNumber = student_id
+        // ";
+
+        // $uploadToProfile = mysqli_query($connect, $sqlUpload);
+
+        // if (move_uploaded_file($_FILES['profileImage']['tmp_name'], $imagePath)) {
+        //     $message = "image uploaded";
+        // } else {
+        //     $message = "failed";
+        // }
+
+        //---------------------------------------------------------------------//
     }
 
     $viewStudentInfo = "SELECT * FROM users WHERE $studentInfoID = id";
@@ -394,7 +421,7 @@
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-4 text-gray-800">Edit Profile</h1>
+                    <h1 class="h3 mb-4 text-gray-800"></h1>
 
                     <div class="row">
 
@@ -419,15 +446,19 @@
                                             $profileImageIcon = $imageRow['profile_image'];
                                         }
                                     ?>
-                                    <form action="" method="POST" enctype="multipart/form-data">
-                                        <input type="hidden" name="size" value="1000000">
+                                <form action="" method="POST" enctype="multipart/form-data">
+                                    <input type="hidden" name="size" value="1000000">
                                         <div>
                                             <input type="file" name="profileImage">
                                         </div>
-                                        <div>
-                                            <input type="submit" name="upload" value="Upload">
+                                        <div class="custom-file">
+                                            <input type="file" name="profileImage" class="custom-file-input" id="customFile">
+                                            <label class="custom-file-label" for="customFile">Choose file</label>
                                         </div>
-                                    </form>
+                                        <div>
+                                            <input type="submit" name="upload" value="POST">
+                                        </div>
+                                </form>
                                     
                                     <!-- <div class="form-group row">
                                         <label for="staticStudentID" class="col-sm-2 col-form-label">Student ID:</label>
