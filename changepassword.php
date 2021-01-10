@@ -11,29 +11,59 @@
 
     //code for changing password
     //echo "string";
-    if (isset($_REQUEST['savePasswordChange'])) {
-        $userQuery = mysqli_query($connect, "SELECT * FROM users WHERE email_address = '".$_SESSION['email_address']."' AND password = '".$_REQUEST['currentPassword']."' ");
+    // if (isset($_REQUEST['savePasswordChange'])) {
+    //     $userQuery = mysqli_query($connect, "SELECT * FROM users WHERE email_address = '".$_SESSION['email_address']."' AND password = '".$_REQUEST['currentPassword']."' ");
 
-        $userRowInfo = mysqli_num_rows($userQuery);
+    //     $userRowInfo = mysqli_num_rows($userQuery);
 
-        if ($userRowInfo > 0) {
-            if ($_REQUEST['newPassword'] == $_REQUEST['reNewPassword']) {
-                $userChangePass = mysqli_query($connect, "UPDATE users SET password = '".$_REQUEST['newPassword']."' WHERE email_address = '".$_SESSION['email_address']."' ");
-                echo "pw: " . $_REQUEST['newPassword'] . "retype: " . $_REQUEST['reNewPassword'];
-                echo "<script> alert('Password changed.') </script>";
-                //echo "<script> window.location = '' </script>";
-            } else {
-                echo "<script> alert('Password input does not match.') </script>";
-            }
+    //     if ($userRowInfo > 0) {
+    //         if ($_REQUEST['newPassword'] == $_REQUEST['reNewPassword']) {
+    //             $userChangePass = mysqli_query($connect, "UPDATE users SET password = '".$_REQUEST['newPassword']."' WHERE email_address = '".$_SESSION['email_address']."' ");
+    //             echo "pw: " . $_REQUEST['newPassword'] . "retype: " . $_REQUEST['reNewPassword'];
+    //             echo "<script> alert('Password changed.') </script>";
+    //             //echo "<script> window.location = '' </script>";
+    //         } else {
+    //             echo "<script> alert('Password input does not match.') </script>";
+    //         }
 
-        if ($_REQUEST['currentPassword'] != "") {
-            echo "<script>alert('pota')</script>";
-        } else {
-            echo "<script>alert('All Input Fields are required!')</script>";
-        } 
+    //     if ($_REQUEST['currentPassword'] != "") {
+    //         echo "<script>alert('pota')</script>";
+    //     } else {
+    //         echo "<script>alert('All Input Fields are required!')</script>";
+    //     } 
 
-        }
+    //     }
+    // }
+
+    //set query
+    $passwordStudentID = $_SESSION['id'];
+    $currentPasswordQuery = mysqli_query($connect, "SELECT * FROM users WHERE id = '$passwordStudentID'");
+    while ($rowCurrentPasswordQuery = mysqli_fetch_array($currentPasswordQuery)) {
+        $oldPasswordOfStudent = $rowCurrentPasswordQuery['password'];
+        echo "old pass encrypted: " . $oldPasswordOfStudent . "<br>";
     }
+
+    //when change password button is clicked
+    $currentPassword = "";
+    if (isset($_POST['savePasswordChange'])) {
+        //set variables
+        $currentPassword = $_POST['currentPassword'];
+        $newPassword = $_POST['newPassword'];
+        $reNewPassword = $_POST['reNewPassword'];
+        $newPasswordHash = password_hash($newPassword, PASSWORD_DEFAULT);
+        echo "current pass entered: " . $currentPassword .  "<br>";
+        echo "new pass entered: " . $newPassword . " encrypted: " . $newPasswordHash . "<br>";
+        echo "retyped pass entered: " . $reNewPassword . "<br>";
+    }
+    //when change password button is clicked
+
+    //trial for matching password
+    if (password_verify($currentPassword, $oldPasswordOfStudent)) {
+        echo "-------password match compared to 'entered current password'<br>";
+    } else {
+        echo "-------password does not match compared to 'entered current password'<br>";
+    }
+    //trial for matching password
 
     //check query on profile image for reference on variable
     $studentIconID = $_SESSION['id'];
