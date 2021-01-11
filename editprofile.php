@@ -9,6 +9,7 @@
         header("Location: login.php");
     }
 
+    //profile icon codes
     $studentNumber = $_GET['studentnumber'];
     $imageResult = mysqli_query($connect, "SELECT * FROM images WHERE student_id = '$studentNumber'"); //student_id = '$studentNumber'
     $imageProfileImage = "";
@@ -19,7 +20,9 @@
         $imageStudentID = $rowImageQuery['student_id'];
         //echo $imageID.$imageProfileImage.$imagePathImage.$imageStudentID;
     }
+    //profile icon codes
 
+    //uploading profile picture for the user codes
     // Initialize message variable
     $msg = "";
     // If upload button is clicked ...
@@ -107,6 +110,7 @@
         // }
         //-------------------------------------------------------------------
     }
+    //uploading profile picture for the user codes
 
     //update personal info
     $studentInfoID = $_SESSION['id'];
@@ -136,6 +140,7 @@
         $updatedPhoneNumber = $rowStudentInfo['phonenumber'];
         $updatedAddress = $rowStudentInfo['address'];
     }
+    //update personal info
 ?>
 
 <head>
@@ -389,15 +394,6 @@
 
                         <div class="topbar-divider d-none d-sm-block"></div>
 
-                        <style>
-                            .avatar {
-                                vertical-align: middle;
-                                width: 40px;
-                                height: 40px;
-                                border-radius: 50%;
-                                }
-                        </style>
-
                         <!-- Nav Item - User Information -->
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
@@ -409,6 +405,7 @@
                                     src="img/<?php $profileImageIcon; ?>"> -->
 
                                 <?php
+                                //top right profile icon
                                     if ($imageProfileImage == NULL) {
                                         echo "<img src='img/undraw_profile.svg' 
                                         class='img-profile rounded-circle'>";
@@ -416,7 +413,9 @@
                                         echo "<img src='img/".$imageProfileImage."' 
                                         class='img-profile rounded-circle'>"; // show image
                                     }
+                                //top right profile icon
                                 ?>
+
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -460,35 +459,49 @@
 
                     <div class="col-lg-4">
 
-                    <!-- college info -->
-                    <div class="card shadow mb-4">
-                        <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary"> 
-                                Profile Picture    
-                            </h6>
+                        <!-- profile picture section/preview -->
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary"> 
+                                    Profile Picture    
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <!-- section for picture -->
+                                <!-- <img class="img-profile rounded-circle"
+                                        src="img/undraw_profile.svg"> -->
+                                <?php
+                                //section for picture
+                                    if ($imageProfileImage == NULL) {
+                                        echo "<img src='img/undraw_profile.svg' 
+                                        class='img-profile rounded-circle'>";
+                                    } else {
+                                        echo "<img src='img/".$imageProfileImage."' 
+                                        class='img-profile rounded-circle'>"; // show image
+                                    }
+                                //section for picture
+                                ?>
+                                <!-- section for picture -->
+                            </div>
+                            <div class="card-footer py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">
+                                    <div>
+                                    <form action="" method="POST" enctype="multipart/form-data">
+                                        <input type="hidden" name="size" value="1000000">
+                                        <input type="file" name="profileImage" class="">
+                                        <input type="submit" name="upload" value="Update" class="btn btn-secondary btn-sm">
+                                    </form>
+                                    </div>
+                                </h6>
+                            </div>
                         </div>
-                        <div class="card-body">
-                            <img class="img-profile rounded-circle"
-                                    src="img/undraw_profile.svg">
-                        </div>
-                        <div class="card-footer py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">
-                                <div>
-                                <form action="" method="POST" enctype="multipart/form-data">
-                                    <input type="hidden" name="size" value="1000000">
-                                    <input type="file" name="profileImage" class="">
-                                    <input type="submit" name="upload" value="Update" class="btn btn-secondary btn-sm">
-                                </form>
-                                </div>
-                            </h6>
-                        </div>
-                    </div>
+                        <!-- profile picture section/preview -->
 
                     </div>
 
                         <div class="col-lg-8">
 
-                            <!-- prfile name -->
+                            <!-- personal info section -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
                                     <h6 class="m-0 font-weight-bold text-primary"> 
@@ -496,7 +509,6 @@
                                     </h6>
                                 </div>
                                 <div class="card-body">
-                                    <!-- <img src="..." alt="..." class="rounded"> -->
                                     <?php
                                         while ($imageRow = mysqli_fetch_array($imageResult)) {
                                             echo "<div id='img_div'>";
@@ -507,15 +519,6 @@
                                             $profileImageIcon = $imageRow['profile_image'];
                                         }
                                     ?>
-                                <!-- <form action="" method="POST" enctype="multipart/form-data">
-                                    <input type="hidden" name="size" value="1000000">
-                                        <div>
-                                            <input type="file" name="profileImage">
-                                        </div>
-                                        <div>
-                                            <input type="submit" name="upload" value="POST">
-                                        </div>
-                                </form> -->
                                     
                                     <!-- <div class="form-group row">
                                         <label for="staticStudentID" class="col-sm-2 col-form-label">Student ID:</label>
@@ -566,14 +569,6 @@
                                             </div>
                                     </div> -->
 
-                                    <!-- <div class="form-group row">
-                                        <label for="staticBirthday" class="col-sm-2 col-form-label">Birthday:</label>
-                                            <div class="col-sm-10">
-                                                <input type="text" readonly class="form-control-plaintext" id="staticBirthday" 
-                                                    value="<?php echo $_SESSION['birthday'];?>">
-                                            </div>
-                                    </div> -->
-
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="">Address:</span>
@@ -603,7 +598,7 @@
                                 </div>
                                 
                             </div>
-
+                            <!-- personal info section -->
                         </div>
 
                     </div>
