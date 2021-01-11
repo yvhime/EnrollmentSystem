@@ -37,13 +37,16 @@
 
     //set query
     $passwordStudentID = $_SESSION['id'];
+    //pass the id to the variable
     $currentPasswordQuery = mysqli_query($connect, "SELECT * FROM users WHERE id = '$passwordStudentID'");
     while ($rowCurrentPasswordQuery = mysqli_fetch_array($currentPasswordQuery)) {
         $oldPasswordOfStudent = $rowCurrentPasswordQuery['password'];
-        echo "old pass encrypted: " . $oldPasswordOfStudent . "<br>";
+        //echo "old pass encrypted: " . $oldPasswordOfStudent . "<br>";
+    //get the encrypted pw from db
     }
+    //set query
 
-    //when change password button is clicked
+    //when save changes button is clicked
     $currentPassword = "";
     if (isset($_POST['savePasswordChange'])) {
         //set variables
@@ -51,18 +54,53 @@
         $newPassword = $_POST['newPassword'];
         $reNewPassword = $_POST['reNewPassword'];
         $newPasswordHash = password_hash($newPassword, PASSWORD_DEFAULT);
-        echo "current pass entered: " . $currentPassword .  "<br>";
-        echo "new pass entered: " . $newPassword . " encrypted: " . $newPasswordHash . "<br>";
-        echo "retyped pass entered: " . $reNewPassword . "<br>";
+        //echo "current pass entered: " . $currentPassword .  "<br>";
+        //echo "new pass entered: " . $newPassword . " encrypted: " . $newPasswordHash . "<br>";
+        //echo "retyped pass entered: " . $reNewPassword . "<br>";
+
+        //changes today = validation -----------------
+        if ($currentPassword != NULL) {
+            //echo "current pass entered: " . $currentPassword . "<br>";
+            if ($newPassword != NULL) {
+                //echo "you have entered your new password.<br>";
+                if ($reNewPassword != NULL) {
+                    //echo "you have entered your new password AGAIN.<br>";
+                    if ($newPassword == $reNewPassword) {
+                        //echo "your new pass and retyped pass matched<br>";
+                        //if new and retyped pw match
+                        if (password_verify($currentPassword, $oldPasswordOfStudent)) {
+                            //first parameter is the current pw entered by the user-raw
+                            //second parameter is the old pw of student written in db-encrypted
+                            //echo "current pw typed matched with pw in db";
+                            $changePasswordQuery = mysqli_query($connect, "UPDATE users 
+                                SET password = '".$newPasswordHash."'
+                                WHERE $passwordStudentID = id "); 
+                            echo "<script>alert('Password successfully changed.')</script>";
+                        } else {
+                            echo "<script>alert('Incorrect current password.')</script>";
+                        }
+                    } else {
+                        echo "<script>alert('Passwords do not match.')</script>";
+                    }
+                } else {
+                    echo "<script>alert('Enter your new password again.')</script>";
+                }
+            } else {
+                echo "<script>alert('Enter your new password.')</script>";
+            }
+        } else {
+            echo "<script>alert('Enter your current password.')</script>";
+        }
+        //changes today = validation -----------------
     }
-    //when change password button is clicked
+    //when save changes button is clicked
 
     //trial for matching password
-    if (password_verify($currentPassword, $oldPasswordOfStudent)) {
-        echo "-------password match compared to 'entered current password'<br>";
-    } else {
-        echo "-------password does not match compared to 'entered current password'<br>";
-    }
+    // if (password_verify($currentPassword, $oldPasswordOfStudent)) {
+    //     echo "-------password match compared to 'entered current password'<br>";
+    // } else {
+    //     echo "-------password does not match compared to 'entered current password'<br>";
+    // }
     //trial for matching password
 
     //check query on profile image for reference on variable
@@ -393,18 +431,7 @@
                                 </div>
                                 <form method="POST" action="changepassword.php">
                                     <div class="card-body">
-                                        <!-- Current password: <input type="password" name="currentPassword" class="col-sm-5"> -->
-                                            <!-- <div class="form-group row">
-                                                <div class="col-sm-6 mb-3 mb-sm-0">
-                                                    <input type="text" name="">
-                                                </div>
-                                            </div> -->
-                                        <!-- <br>
-                                        New password: <input type="password" name="newPassword" class="col-sm-5"><br>
-                                        Re-type new password: <input type="password" name="reNewPassword" class="col-sm-5"><br>
-                                        <button type="submit" name="savePasswordChange" id="savePasswordChange" value="Save changes" class="btn btn-secondary btn-sm">Save changes</button> -->
-
-                                        <!-- edit on ui -->
+                                        <!-- change password input and save changes button -->
                                         <div class="input-group mb-3">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="">Current password:</span>
@@ -427,7 +454,7 @@
                                         </div>
 
                                         <input type="submit" class="btn btn-primary btn-user btn-block" name="savePasswordChange" id="savePasswordChange" value="Save changes">
-                                        <!-- edit on ui -->
+                                        <!-- change password input and save changes button -->
                                     </div>
                                 </form>
                             </div>
