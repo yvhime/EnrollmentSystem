@@ -103,9 +103,19 @@
     // }
     //trial for matching password
 
-    //check query on profile image for reference on variable
+    //query for topright profile icon
     $studentIconID = $_SESSION['id'];
     $imageResult = mysqli_query($connect, "SELECT * FROM images WHERE student_id = '$studentIconID'"); //student_id = '$studentNumber'
+    $imageProfileImage = "";
+    while ($rowImageQuery = mysqli_fetch_array($imageResult)) {
+        $imageID = $rowImageQuery['id'];
+        $imageProfileImage = $rowImageQuery['profile_image'];
+        $imagePathImage = $rowImageQuery['path'];
+        $imageStudentID = $rowImageQuery['student_id'];
+        //echo $imageID.$imageProfileImage.$imagePathImage.$imageStudentID;
+    }
+    //query for topright profile icon
+
 
 ?>
 <head>
@@ -368,17 +378,15 @@
                                     src="img/undraw_profile.svg"> -->
 
                                 <?php
-                                    while ($imageIconRow = mysqli_fetch_array($imageResult)) {
-                                        if ($imageIconRow['profile_image'] == NULL) {
-                                            echo "<img src='img/undraw_profile.svg' 
-                                                class='img-profile rounded-circle'>";
-                                        } else {
-                                            echo "<img src='img/".$imageIconRow['profile_image']."' 
-                                            class='img-profile rounded-circle'>"; // show image
-                                        }
-                                        // echo "<img src='img/".$imageIconRow['profile_image']."' 
-                                        // class='img-profile rounded-circle'>"; // show image
+                                //top right profile icon
+                                    if ($imageProfileImage == NULL) {
+                                        echo "<img src='img/undraw_profile.svg' 
+                                        class='img-profile rounded-circle'>";
+                                    } else {
+                                        echo "<img src='img/".$imageProfileImage."' 
+                                        class='img-profile rounded-circle'>"; // show image
                                     }
+                                //top right profile icon
                                 ?>
                             </a>
                             <!-- Dropdown - User Information -->
@@ -423,7 +431,7 @@
 
                         <div class="col-lg-5">
 
-                            <!-- prfile name -->
+                            <!-- change password section -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
                                     <h6 class="m-0 font-weight-bold text-primary"> 
@@ -458,6 +466,7 @@
                                     </div>
                                 </form>
                             </div>
+                            <!-- change password section -->
 
                         </div>
 
