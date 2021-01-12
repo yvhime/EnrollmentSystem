@@ -4,8 +4,8 @@
     //setcookie();
     session_start();
     include("connection.php");
-        //this code doesnt allow you to access this page(index.php) without being logged in with session['username']
-        if (!isset($_SESSION['username'])) {
+        //this code doesnt allow you to access this page(index.php) without being logged in with session['email_address']
+        if (!isset($_SESSION['email_address'])) {
             header("Location: login.php");
         }
 ?>
@@ -273,21 +273,26 @@
                                 <img class="img-profile rounded-circle"
                                     src="img/undraw_profile.svg">
                             </a> -->
-                            <!-- logged in user -->
+                            <!-- logged in user/admin -->
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">
-                                    <?php echo $_SESSION['username']; ?>
+                                    <?php echo $_SESSION['email_address']; ?>
                                 </span>
                                 <img class="img-profile rounded-circle"
                                     src="img/undraw_profile.svg">
                             </a>
+                            <!-- logged in user/admin -->
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
                                 <a class="dropdown-item" href="my_profile.php">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Profile
+                                </a>
+                                <a class="dropdown-item" href="changepassword.php">
+                                    <i class="fas fa-lock fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Change Password
                                 </a>
                                 <a class="dropdown-item" href="#">
                                     <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -338,6 +343,7 @@
                                                 First Year Students</div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">
                                             <?php
+                                                //query for counting freshmen students
                                                 $firstYearStudent = "SELECT yearlevel, count(*) as freshmenYear FROM users WHERE yearlevel = 'First Year' GROUP BY yearlevel";
                                                 $resultFirstYear = mysqli_query($connect, $firstYearStudent);
                                                 while ($rowFirstYear = mysqli_fetch_array($resultFirstYear)) {
@@ -346,6 +352,7 @@
                                                     //echo $rowFirstYear["yearlevel"] . $rowFirstYear["freshmenYear"];
                                                     echo $rowFirstYear["freshmenYear"];
                                                 }
+                                                //query for counting freshmen students
                                             ?>
                                             </div>
                                         </div>
@@ -356,6 +363,7 @@
                                 </div>
                             </div>
                         </div>
+                        <!-- First year students number -->
 
                         <!-- Second year students number -->
                         <div class="col-xl-3 col-md-6 mb-4">
@@ -367,6 +375,7 @@
                                                 Second Year Students</div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">
                                             <?php 
+                                                //query for counting sophomore students
                                                 $secondYearStudent = "SELECT yearlevel, count(*) as sophomoreYear FROM users WHERE yearlevel = 'Second Year' GROUP BY yearlevel";
                                                 $resultSecondYear = mysqli_query($connect, $secondYearStudent);
                                                 while ($rowSecondYear = mysqli_fetch_array($resultSecondYear)) {
@@ -375,6 +384,7 @@
                                                     //echo $rowFirstYear["yearlevel"] . $rowFirstYear["freshmenYear"];
                                                     echo $rowSecondYear["sophomoreYear"];
                                                 }
+                                                //query for counting sophomore students
                                             ?>
                                             </div>
                                         </div>
@@ -385,6 +395,7 @@
                                 </div>
                             </div>
                         </div>
+                        <!-- Second year students number -->
 
                         <!-- Third year students number -->
                         <div class="col-xl-3 col-md-6 mb-4">
@@ -399,6 +410,7 @@
                                                 <div class="col-auto">
                                                     <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
                                                     <?php
+                                                        //query for counting junior students
                                                         $thirdYearStudent = "SELECT yearlevel, count(*) as juniorYear FROM users WHERE yearlevel = 'Third Year' GROUP BY yearlevel";
                                                         $resultThirdYear = mysqli_query($connect, $thirdYearStudent);
                                                         while ($rowThirdYear = mysqli_fetch_array($resultThirdYear)) {
@@ -407,6 +419,7 @@
                                                             //echo $rowFirstYear["yearlevel"] . $rowFirstYear["freshmenYear"];
                                                             echo $rowThirdYear["juniorYear"];
                                                         }
+                                                        //query for counting junior students
                                                     ?>
                                                     </div>
                                                 </div>
@@ -426,6 +439,7 @@
                                 </div>
                             </div>
                         </div>
+                        <!-- Third year students number -->
 
                         <!-- Fourth year students number -->
                         <div class="col-xl-3 col-md-6 mb-4">
@@ -438,6 +452,7 @@
                                             </div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">
                                             <?php
+                                                //query for counting senior students
                                                 $fourthYearStudent = "SELECT yearlevel, count(*) as seniorYear FROM users WHERE yearlevel = 'Fourth Year' GROUP BY yearlevel";
                                                 $resultFourthYear = mysqli_query($connect, $fourthYearStudent);
                                                 while ($rowFourthYear = mysqli_fetch_array($resultFourthYear)) {
@@ -446,6 +461,7 @@
                                                     //echo $rowFirstYear["yearlevel"] . $rowFirstYear["freshmenYear"];
                                                     echo $rowFourthYear["seniorYear"];
                                                 }
+                                                //query for counting senior students
                                             ?>
                                             </div>
                                         </div>
@@ -456,13 +472,14 @@
                                 </div>
                             </div>
                         </div>
+                        <!-- Fourth year students number -->
                     </div>
 
                     <!-- Content Row -->
 
                     <div class="row">
 
-                        <!-- Pie Chart 2trial to edit-->
+                        <!-- Pie Chart -->
                         <?php
                             $pieProgramData = "SELECT program, count(*) as programData FROM users GROUP BY program";
                             $resultProgramData = mysqli_query($connect, $pieProgramData);
@@ -720,7 +737,8 @@
             var chart = new google.visualization.PieChart(document.getElementById('pieChartProgram'));
             chart.draw(data, options);
         }
-    </script>                                          
+    </script>  
+    <!-- javascript google api for pie chart -->                                        
 
 </body>
 

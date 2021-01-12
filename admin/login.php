@@ -5,44 +5,135 @@ session_start();
 include("connection.php");
 //can use _POST or _REQUEST / _SESSION DOESNT WORK FOR SOME REASONS ON ISSET LOGIN 
 
-//to pass values by session
-if(isset($_REQUEST['login'])) {
-    $user_name = $_POST['username'];
-    $sql_user = mysqli_query($connect, "SELECT * FROM admin WHERE username = '".$user_name."' ");
-    $sql_row = mysqli_fetch_array($sql_user);
+// //to pass values by session
+// if(isset($_REQUEST['login'])) {
+//     $user_name = $_POST['username'];
+//     $sql_user = mysqli_query($connect, "SELECT * FROM admin WHERE username = '".$user_name."' ");
+//     $sql_row = mysqli_fetch_array($sql_user);
 
-    if($sql_row > 0) {
-        $_SESSION['id'] = $sql_row['id'];
-        $_SESSION['username'] = $sql_row['username'];
-        $_SESSION['firstname'] = $sql_row['firstname'];
-        $_SESSION['lastname'] = $sql_row['lastname'];
-        $_SESSION['password'] = $sql_row['password'];
-        $_SESSION['emailaddress'] = $sql_row['emailaddress'];
-        $_SESSION['phonenumber'] = $sql_row['phonenumber'];
-        //echo "<script>window.location = 'index.php'</script>";
-    }
-}
+//     if($sql_row > 0) {
+//         $_SESSION['id'] = $sql_row['id'];
+//         $_SESSION['username'] = $sql_row['username'];
+//         $_SESSION['firstname'] = $sql_row['firstname'];
+//         $_SESSION['lastname'] = $sql_row['lastname'];
+//         $_SESSION['password'] = $sql_row['password'];
+//         $_SESSION['emailaddress'] = $sql_row['emailaddress'];
+//         $_SESSION['phonenumber'] = $sql_row['phonenumber'];
+//         //echo "<script>window.location = 'index.php'</script>";
+//     }
+// }
+// //to pass values by session
+
+// //code for logging in
+// //check whether the variable is empty
+// //or is set/declared
+// if(isset($_POST['username'])) {
+//     $user_name = $_POST['username'];
+//     $pass_word = $_POST['pass_word'];
+//     $result = "SELECT * FROM admin WHERE username = '".$user_name."' AND password = '".$pass_word."' ";
+//     //$connect came from include("connection.php");
+//     //always put mysqli/connect first
+//     $sql_info = mysqli_query($connect, $result);
+//     //i think == 1 and > 0 is the same
+//     //i think using mysqlinumrows checks if there is a
+//     //value stored in db not sure
+//     if(mysqli_num_rows($sql_info) > 0) {
+//         //echo "<script>alert('Success!')</script>";
+//         echo "<script>window.location = 'index.php'</script>";
+//     }
+//     else {
+//         echo "<script>alert('Fail!')</script>";
+//     }
+// }
+
+//--------------------------------------------------------------------------------
+
+//to pass values by session
+// if(isset($_REQUEST['login'])) {
+//     $emailAddress = $_POST['emailAddress'];
+//     $sql_user = mysqli_query($connect, "SELECT * FROM admin WHERE emailaddress = '".$emailAddress."' ");
+//     $sql_row = mysqli_fetch_array($sql_user);
+
+//     if($sql_row > 0) {
+//         $_SESSION['id'] = $sql_row['id'];
+//         $_SESSION['username'] = $sql_row['username'];
+//         $_SESSION['firstname'] = $sql_row['firstname'];
+//         $_SESSION['lastname'] = $sql_row['lastname'];
+//         $_SESSION['password'] = $sql_row['password'];
+//         $_SESSION['emailaddress'] = $sql_row['emailaddress'];
+//         $_SESSION['phonenumber'] = $sql_row['phonenumber'];
+//         //echo "<script>window.location = 'index.php'</script>";
+//     }
+// }
+//to pass values by session
 
 //code for logging in
 //check whether the variable is empty
 //or is set/declared
-if(isset($_POST['username'])) {
-    $user_name = $_POST['username'];
-    $pass_word = $_POST['pass_word'];
-    $result = "SELECT * FROM admin WHERE username = '".$user_name."' AND password = '".$pass_word."' ";
-    //$connect came from include("connection.php");
-    //always put mysqli/connect first
-    $sql_info = mysqli_query($connect, $result);
-    //i think == 1 and > 0 is the same
-    //i think using mysqlinumrows checks if there is a
-    //value stored in db not sure
-    if(mysqli_num_rows($sql_info) > 0) {
-        //echo "<script>alert('Success!')</script>";
-        echo "<script>window.location = 'index.php'</script>";
+// if(isset($_POST['emailAddress'])) {
+//     $emailAddress = $_POST['emailAddress'];
+//     $pass_word = $_POST['pass_word'];
+//     $result = "SELECT * FROM admin WHERE emailaddress = '".$emailAddress."' AND password = '".$pass_word."' ";
+//     //$connect came from include("connection.php");
+//     //always put mysqli/connect first
+//     $sql_info = mysqli_query($connect, $result);
+//     //i think == 1 and > 0 is the same
+//     //i think using mysqlinumrows checks if there is a
+//     //value stored in db not sure
+//     if(mysqli_num_rows($sql_info) > 0) {
+//         //echo "<script>alert('Success!')</script>";
+//         echo "<script>window.location = 'index.php'</script>";
+//     }
+//     else {
+//         echo "<script>alert('Fail!')</script>";
+//     }
+// }
+
+//--------------------------------------------------------------------------------
+
+$email_address = ""; //putting a non value
+
+if(isset($_REQUEST['login'])) {
+
+    $email_address = $_POST['emailAddress'];
+    $sql_user = mysqli_query($connect, "SELECT * FROM admin WHERE emailaddress = '" . $email_address . "' ");
+    $sql_row = mysqli_fetch_array($sql_user);
+
+    if($sql_row > 0) {
+        $_SESSION['id'] = $sql_row['id'];
+        $_SESSION['firstname'] = $sql_row['firstname'];
+        $_SESSION['lastname'] = $sql_row['lastname'];
+        $_SESSION['email_address'] = $sql_row['emailaddress'];
+        $_SESSION['password'] = $sql_row['password'];
+        $_SESSION['phonenumber'] = $sql_row['phonenumber'];
+        //echo $_SESSION['id'] . " " . $_SESSION['email_address'] . " " . $_SESSION['password'];
     }
-    else {
-        echo "<script>alert('Fail!')</script>";
+}
+
+if(isset($_POST['login'])) { // email_address used for logging in
+
+    $emailAddress = mysqli_real_escape_string($connect, $_POST["emailAddress"]);  
+    $password = mysqli_real_escape_string($connect, $_POST["pass_word"]);  
+    $query = "SELECT * FROM admin WHERE emailaddress = '".$emailAddress."'";  
+    $result = mysqli_query($connect, $query); 
+
+    if(mysqli_num_rows($result) > 0) {  
+        while($row = mysqli_fetch_array($result)) {  
+            if(password_verify($password, $row["password"])) {  
+                //return true;  
+                $_SESSION["email_address"] = $emailAddress;  
+                header("location:index.php");  
+                echo "success";
+            } else {  
+                //return false;  
+                echo "fail";
+                //echo '<script>alert("Wrong password")</script>';  
+            }  
+        }  
+    } else {  
+        echo '<script>alert("Wrong User Details")</script>';  
     }
+
 }
 ?>
 <head>
@@ -88,10 +179,10 @@ if(isset($_POST['username'])) {
                                     <!-- <form class="user"> -->
                                         <form method="POST" action="login.php">
                                         <div class="form-group">
-                                            <!-- enter username -->
-                                            <input type="text" class="form-control form-control-user" name="username" 
-                                                id="username" aria-describedby="emailHelp"
-                                                placeholder="Username">
+                                            <!-- enter email address -->
+                                            <input type="text" class="form-control form-control-user" name="emailAddress" 
+                                                id="emailAddress" aria-describedby="emailHelp"
+                                                placeholder="Email address">
                                         </div>
                                         <!-- <div class="form-group"> -->
                                             <!-- enter password -->
