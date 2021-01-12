@@ -45,19 +45,41 @@ if(isset($_POST['createaccount'])) {
     //     echo "<br>password not matched";
     // }
 
+    // //to check if passwords match
+    // if ($passwordRaw == $repeatPassword) {
+    //     //check whether there is a duplicate username
+    //     $check_duplicate = mysqli_query($connect, "SELECT id FROM users WHERE email_address = '$email_address' ");
+    //     $row = mysqli_num_rows($check_duplicate);
+
+    //     if($row > 0) {
+    //         echo "<script>alert('Username already exists. Choose a new one.')</script>";    
+    //     } 
+    //     //insert acc info to database redirect to index.php
+    //     //$passwordHash trial
+    //     else {
+    //         $input_account = mysqli_query($connect, "INSERT INTO users (firstname, lastname, email_address, password, phonenumber, gender, birthday, address) 
+    //             VALUES ('$firstname', '$lastname', '$email_address', '$passwordHash', '$phonenumber', '$gender', '$birthday', '$address') ");
+    //         echo "<script>alert('Create new account success.')</script>";
+    //         echo "<script> window.location='login.php' </script>";
+    //     }
+    // } else {
+    //     echo "<script> alert('Passwords does not match.') </script>";
+    // }
+
     //to check if passwords match
     if ($passwordRaw == $repeatPassword) {
         //check whether there is a duplicate username
-        $check_duplicate = mysqli_query($connect, "SELECT id FROM users WHERE email_address = '$email_address' ");
+        $check_duplicate = mysqli_query($connect, "SELECT id FROM admin WHERE emailaddress = '$email_address' ");
         $row = mysqli_num_rows($check_duplicate);
 
         if($row > 0) {
-            echo "<script>alert('Username already exists. Choose a new one.')</script>";    
+            echo "<script>alert('Email address already in use. Choose a new one.')</script>";    
         } 
         //insert acc info to database redirect to index.php
         //$passwordHash trial
         else {
-            $input_account = mysqli_query($connect, "INSERT INTO users (firstname, lastname, email_address, password, phonenumber, gender, birthday, address) VALUES ('$firstname', '$lastname', '$email_address', '$passwordHash', '$phonenumber', '$gender', '$birthday', '$address') ");
+            $input_account = mysqli_query($connect, "INSERT INTO admin (firstname, lastname, password, emailaddress, phonenumber) 
+                VALUES ('$firstname', '$lastname', '$passwordHash', '$email_address', '$phonenumber') ");
             echo "<script>alert('Create new account success.')</script>";
             echo "<script> window.location='login.php' </script>";
         }
@@ -202,7 +224,7 @@ if(isset($_POST['createaccount'])) {
                                     <div class="text-center">
                                         <h1 class="h4 text-gray-900 mb-4">Create New Admin Account</h1>
                                     </div>
-                                    <!-- <form class="user"> -->
+                                    <!-- create new admin acc section -->
                                     <form method="POST" action="">
                                         <div class="form-group row">
                                             <div class="col-sm-6 mb-3 mb-sm-0 form-outline">
