@@ -3,8 +3,8 @@
 <?php
     session_start();
     include("connection.php");
-        //this code doesnt allow you to access this page(index.php) without being logged in with session['username']
-        if (!isset($_SESSION['username'])) {
+        //this code doesnt allow you to access this page(index.php) without being logged in with session['email_address']
+        if (!isset($_SESSION['email_address'])) {
             header("Location: login.php");
         }
 
@@ -20,7 +20,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Tables</title>
+    <title>Lorem Ipsum Colleges</title>
 
     <!-- Custom fonts for this template -->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -275,7 +275,7 @@
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">
-                                    <?php echo $_SESSION["username"]; ?>
+                                    <?php echo $_SESSION["email_address"]; ?>
                                 </span>
                                 <img class="img-profile rounded-circle"
                                     src="img/undraw_profile.svg">
@@ -286,6 +286,10 @@
                                 <a class="dropdown-item" href="#">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Profile
+                                </a>
+                                <a class="dropdown-item" href="changepassword.php">
+                                    <i class="fas fa-lock fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Change Password
                                 </a>
                                 <a class="dropdown-item" href="#">
                                     <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -313,10 +317,7 @@
 
                     <!-- Page Heading -->
                     <h1 class="h3 mb-2 text-gray-800">College Students</h1>
-                    <!-- <form action="" method="POST"> -->
-                        <!-- <input type="submit" name="pdfReport" id="pdfReport" value="Print"
-                        onclick="window.open('listofstudents.php')"> -->
-                    <!-- </form> -->
+    
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
@@ -331,8 +332,10 @@
                                         //echo $programRows['coursename'];
                                     }
                                 ?>
+                                <!-- button to show pdf file regarding list of students -->
                                 <input type="submit" name="pdfReport" id="pdfReport" value="Print" class="btn btn-secondary btn-sm"
                                     onclick="window.open('listofstudents.php')">
+                                <!-- button to show pdf file regarding list of students -->
                             </h6>
                         </div>
                         <div class="card-body">
@@ -360,6 +363,7 @@
                                     </tfoot>
                                     <tbody>
                                         <?php
+                                        //query to show all students/users
                                         $viewAllStudents = "SELECT * FROM users";
                                         $viewConnect = mysqli_query($connect, $viewAllStudents);
 
@@ -372,18 +376,26 @@
                                                 echo "<td>" . $studentRows['email_address'] . "</td>";
                                                 //echo "<td>" . $studentRows['id'] . "</td>";
                                                 echo "<td>" . $studentRows['program'] . "</td>";
+                                        //query to show all students/users
                                         ?>
                                         
                                         <!-- <form method="GET" action="enroll.php"> -->
                                             <td>
                                                 <div class="btn-group">
-                                                    <!-- studentnumber here should be the same for enroll.php // make sure to have method GET -->
+                                                    <!-- studentnumber here should be the same for enroll.php
+                                                        studentnumber is passed from this page to enroll.php 
+                                                        make sure to have method GET to show values on URL -->
                                                 <form method="GET" action="enroll.php">
-                                                    <input type='button' value='Enroll' class="btn btn-secondary btn-sm" onclick="window.location = 'enroll.php?studentnumber=<?php echo $studentRows['id'] ?> ' ">
+                                                    <input type='button' value='Enroll' class="btn btn-secondary btn-sm" 
+                                                        onclick="window.location = 'enroll.php?studentnumber=<?php echo $studentRows['id'] ?> ' ">
                                                 </form>
 
+                                                    <!-- studentnumber here should be the same for remove.php
+                                                        studentnumber is passed from this page to remove.php 
+                                                        make sure to have method GET to show values on URL -->
                                                 <form method="GET" action="remove.php">
-                                                    <input type="button" value="Remove" class="btn btn-secondary btn-sm" onclick="window.location='remove.php?studentnumber=<?php echo $studentRows['id']?>' ">
+                                                    <input type="button" value="Remove" class="btn btn-secondary btn-sm" 
+                                                        onclick="window.location='remove.php?studentnumber=<?php echo $studentRows['id']?>' ">
                                                 </form>
                                                 </div>
                                             </td>

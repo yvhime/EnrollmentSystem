@@ -123,15 +123,15 @@ if(isset($_POST['login'])) { // email_address used for logging in
                 //return true;  
                 $_SESSION["email_address"] = $emailAddress;  
                 header("location:index.php");  
-                echo "success";
+                //echo "success";
             } else {  
                 //return false;  
-                echo "fail";
-                //echo '<script>alert("Wrong password")</script>';  
+                //echo "fail";
+                echo '<script>alert("The password you’ve entered is incorrect.")</script>';  
             }  
         }  
     } else {  
-        echo '<script>alert("Wrong User Details")</script>';  
+        echo '<script>alert("The email address you’ve entered is not registered.")</script>';  
     }
 
 }
@@ -144,7 +144,7 @@ if(isset($_POST['login'])) { // email_address used for logging in
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>wkwkw</title>
+    <title>Lorem Ipsum Colleges</title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -184,11 +184,6 @@ if(isset($_POST['login'])) { // email_address used for logging in
                                                 id="emailAddress" aria-describedby="emailHelp"
                                                 placeholder="Email address">
                                         </div>
-                                        <!-- <div class="form-group"> -->
-                                            <!-- enter password -->
-                                            <!-- <input type="password" class="form-control form-control-user" name="pass_word" 
-                                                id="pass_word" placeholder="Password"> -->
-                                        <!-- </div> -->
 
                                         <!-- password ui -->
                                         <div class="input-group mb-3">
