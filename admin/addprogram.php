@@ -4,8 +4,8 @@
     session_start();
     include("connection.php");
 
-    //this code doesnt allow you to access this page(index.php) without being logged in with session['username']
-    if (!isset($_SESSION['username'])) {
+    //this code doesnt allow you to access this page(index.php) without being logged in with session['email_address']
+    if (!isset($_SESSION['email_address'])) {
         header("Location: login.php");
     }
 
@@ -32,7 +32,8 @@
             } 
             //insert coursename to tbl program
             else {
-                $inputCourse = mysqli_query($connect, "INSERT INTO program (degree, coursename) VALUES ('$degree', '$courseName')");
+                $inputCourse = mysqli_query($connect, "INSERT INTO program (degree, coursename) 
+                    VALUES ('$degree', '$courseName')");
                 echo "<script>alert('Program added!')</script>";
                 echo "<script>window.location = 'viewprograms.php'</script>";
             }
@@ -54,7 +55,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Blank</title>
+    <title>Lorem Ipsum Colleges</title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -238,7 +239,7 @@
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">
-                                    <?php echo $_SESSION['username']; ?>
+                                    <?php echo $_SESSION['email_address']; ?>
                                 </span>
                                 <img class="img-profile rounded-circle"
                                     src="img/undraw_profile.svg">
@@ -249,6 +250,10 @@
                                 <a class="dropdown-item" href="#">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Profile
+                                </a>
+                                <a class="dropdown-item" href="changepassword.php">
+                                    <i class="fas fa-lock fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Change Password
                                 </a>
                                 <a class="dropdown-item" href="#">
                                     <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -281,7 +286,7 @@
 
                         <div class="col-lg-5">
 
-                            <!-- prfile name -->
+                            <!-- add new program section -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
                                     <h6 class="m-0 font-weight-bold text-primary"></h6>
@@ -294,7 +299,7 @@
                                                 <label class="input-group-text" for="course">Degree:</label>
                                             </div>
                                             <select class="custom-select" id="degree" name="degree">
-                                                <option value="default" selected>...</option>
+                                                <option value="default" selected></option>
                                                 <option <?php if($degree == "Bachelor of Science") echo "selected"; ?> 
                                                     value="Bachelor of Science">Bachelor of Science</option>
                                                 <option <?php if($degree == "Bachelor of Arts") echo "selected"; ?> 
@@ -322,6 +327,7 @@
                                 </div>
                                 </form>
                             </div>
+                            <!-- add new program section -->
 
                         </div>
 

@@ -8,6 +8,7 @@
             header("Location: login.php");
         }
 
+    //pdf source code
     require_once("TCPDF-main/tcpdf.php");
 
     $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
@@ -78,7 +79,7 @@
                 </a>
 
                 <a class="nav-link collapsed" href="addprogram.php" aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-fw fa-cog"></i>
+                    <i class="far fa-plus-square"></i>
                     <span>Add New Program</span>
                 </a>
             </li>
