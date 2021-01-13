@@ -381,7 +381,9 @@
                                                 <label class="input-group-text" for="course">Year Level:</label>
                                             </div>
                                             <select class="custom-select" id="yearLevel" name="yearLevel">
-                                                <option selected value=""></option>
+                                                <option selected value="<?php echo $yearLevel;?>">
+                                                    <?php echo $yearLevel . " (current)";?>
+                                                </option>
                                                 <option value="First">First</option>
                                                 <option value="Second">Second</option>
                                                 <option value="Third">Third</option>

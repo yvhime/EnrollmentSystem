@@ -8,7 +8,7 @@ $firstname = "";
 $lastname = "";
 $phonenumber = "";
 $email_address = "";
-$gender = "Male";
+$gender = "Gender (Optional)";
 $birthday = "";
 $address = "";
 
@@ -248,7 +248,7 @@ if(isset($_POST['createaccount'])) {
                                                 <!-- gender -->
                                                 <!-- <input type="text" class="form-control form-control-user" name="gender" id="gender" placeholder="Gender"> -->
                                                 <select name="gender" id="gender" class="form-control form-control-user">
-                                                    <option disabled="">Gender</option>
+                                                    <option value="">Gender (Optional)</option>
                                                     <option <?php if($gender == "Male") echo "selected"; ?> value="Male">
                                                         Male</option>
                                                     <option <?php if($gender == "Female") echo "selected"; ?> value="Female">
