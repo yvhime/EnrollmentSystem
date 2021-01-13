@@ -2,15 +2,14 @@
     session_start();
     include("connection.php");
 
-    //this code doesnt allow you to access this page(index.php) without being logged in with session['username']
-    if (!isset($_SESSION['username'])) {
+    //this code doesnt allow you to access this page(index.php) without being logged in with session['email_address']
+    if (!isset($_SESSION['email_address'])) {
         header("Location: login.php");
     }
 
     function pdfStudents() {
         $output = "";
         include("connection.php");
-        //$connect = mysqli_connect("localhost", "admin_vhvh", "admin", "newsystem");
         $allStudents = mysqli_query($connect, "SELECT * FROM users ORDER BY lastname");
         
         while ($rowsAllStudents = mysqli_fetch_array($allStudents)) {
@@ -128,7 +127,9 @@
 
     // Close and output PDF document
     // This method has several options, check the source code documentation for more information.
+
     ob_end_clean();
+    //code from stackoverflow to show pdf file
     $pdf->Output('list_of_enrolled_students.pdf', 'I'); //title for download
 
 ?>

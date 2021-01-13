@@ -4,8 +4,8 @@
     session_start();
     include("connection.php");
 
-    //this code doesnt allow you to access this page(index.php) without being logged in with session['username']
-    if (!isset($_SESSION['username'])) {
+    //this code doesnt allow you to access this page(index.php) without being logged in with session['email_address']
+    if (!isset($_SESSION['email_address'])) {
         header("Location: login.php");
     }
 
@@ -51,7 +51,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Blank</title>
+    <title>Lorem Ipsum Colleges</title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -186,7 +186,7 @@
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">
-                                    <?php echo $_SESSION['username'];?>
+                                    <?php echo $_SESSION['email_address'];?>
                                 </span>
                                 <img class="img-profile rounded-circle"
                                     src="img/undraw_profile.svg">
@@ -197,6 +197,10 @@
                                 <a class="dropdown-item" href="#">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Profile
+                                </a>
+                                <a class="dropdown-item" href="changepassword.php">
+                                    <i class="fas fa-lock fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Change Password
                                 </a>
                                 <a class="dropdown-item" href="#">
                                     <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -229,7 +233,7 @@
 
                         <div class="col-lg-5">
 
-                            <!-- prfile name -->
+                            <!-- enroll student section -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
                                     <h6 class="m-0 font-weight-bold text-primary"> 
@@ -237,8 +241,10 @@
                                 </div>
                                 <div class="card-body">
                                     <form method="POST" action="">
-                                    <!-- studentnumber inside $_GET is the same as studentnumber in viewstudents.php // use $_GET  -->
+                                    <!-- studentnumber inside $_GET is the same as studentnumber in viewstudents.php
+                                        use $_GET since its written on the URL  -->
                                     <?php
+                                    //query for showing a specific students info from database
                                         $studentNumber = $_GET['studentnumber'];
                                         $studentInfoSql = "SELECT * FROM users WHERE {$studentNumber} = id ";
                                         $studentResult = mysqli_query($connect, $studentInfoSql);
@@ -252,6 +258,7 @@
                                             $currentYearLevel = $rowResult["yearlevel"];
                                             $currentSemester = $rowResult["semester"];
                                             //echo $program;
+                                    //query for showing a specific students info from database
                                     ?>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
@@ -270,7 +277,7 @@
 
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text" id="">ID:</span>
+                                            <span class="input-group-text" id="">Student ID:</span>
                                         </div>
                                         <input type="text" class="form-control" value="<?php echo $studentNumber ?>" placeholder="" name="" id="" readonly>
                                     </div>
@@ -309,12 +316,14 @@
                                             <option value="<?php echo $program; ?>" selected><?php echo $program; ?></option>
                                         <!-- current program of the student -->
                                         <?php
+                                            //query for showing all listed programs from database
                                             $courseList = "SELECT * FROM program";
                                             $courseListResult = mysqli_query($connect, $courseList);
 
                                             while ($courseRow = mysqli_fetch_array($courseListResult)) {
                                                 echo "<option value='". $courseRow['coursename'] ."' >" . $courseRow['coursename'] . "</option>";
                                             }
+                                            //query for showing all listed programs from database
                                         ?>
                                         </select>
                                     </div>
@@ -369,6 +378,7 @@
                                     </form>
                                 </div>
                             </div>
+                            <!-- enroll student section -->
 
                         </div>
 
