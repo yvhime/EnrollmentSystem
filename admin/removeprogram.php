@@ -4,21 +4,23 @@
     session_start();
     include("connection.php");
 
-    //this code doesnt allow you to access this page(index.php) without being logged in with session['username']
-    if (!isset($_SESSION['username'])) {
+    //this code doesnt allow you to access this page(index.php) without being logged in with session['email_address']
+    if (!isset($_SESSION['email_address'])) {
         header("Location: login.php");
     }
 
+    //query for deleting the selected subject from the database
     if (isset($_POST["removeSubject"])) {
         $courseID = $_GET["id"];
         $subjectCode = $_GET["subjectcode"];
 
         $queryRemoveSubject = "DELETE FROM subject WHERE $courseID = id";
         if (mysqli_query($connect, $queryRemoveSubject)) {
-            echo "<script> alert('Subject removed from current year's curriculum.'); </script>";
+            echo "<script> alert('Subject removed from current year's curriculum.') </script>";
             echo "<script> window.location='viewprograms.php' </script>";
         }
     }
+    //query for deleting the selected subject from the database
 ?>
 <head>
 
@@ -28,7 +30,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Blank</title>
+    <title>Lorem Ipsum Colleges</title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -83,7 +85,7 @@
                 </a>
 
                 <a class="nav-link collapsed" href="addprogram.php" aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-fw fa-cog"></i>
+                    <i class="far fa-plus-square"></i>
                     <span>Add New Program</span>
                 </a>
             </li>
@@ -278,7 +280,7 @@
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">
-                                    
+                                    <?php echo $_SESSION["email_address"]; ?>
                                 </span>
                                 <img class="img-profile rounded-circle"
                                     src="img/undraw_profile.svg">
@@ -289,6 +291,10 @@
                                 <a class="dropdown-item" href="#">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Profile
+                                </a>
+                                <a class="dropdown-item" href="changepassword.php">
+                                    <i class="fas fa-lock fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Change Password
                                 </a>
                                 <a class="dropdown-item" href="#">
                                     <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -321,13 +327,14 @@
 
                         <div class="col-lg-5">
 
-                            <!-- prfile name -->
+                            <!-- remove subject section -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
                                     <h6 class="m-0 font-weight-bold text-primary"></h6>
                                 </div>
                                 <form method="POST" action="">
                                     <?php
+                                        //query for showing details of subject to be deleted
                                         $courseID = $_GET["id"];
                                         $subjectCode = $_GET["subjectcode"];
                                         //echo $courseID . $subjectCode;
@@ -341,12 +348,9 @@
                                             $courseName = $rowRemoveSubject["coursename"];
                                             //echo $subjectName;
                                         }
+                                        //query for showing details of subject to be deleted
                                     ?>
-                                    <div class="card-body">
-                                        <!-- Subject name: <input type="text" class="form-control form-control-user" name="" id=""><br> -->
-                                        <!-- Subject code: <input type="text" class="form-control form-control-user" name="" id=""><br> -->
-                                        
-                                        
+                                    <div class="card-body">                                   
                                     
                                         <div class="input-group mb-3">
                                             <div class="input-group-prepend">
@@ -374,6 +378,7 @@
                                     </div>
                                 </form>
                             </div>
+                            <!-- remove subject section -->
 
                         </div>
 

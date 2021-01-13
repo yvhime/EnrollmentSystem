@@ -5,11 +5,12 @@
     session_start();
     include("connection.php");
 
-    //this code doesnt allow you to access this page(index.php) without being logged in with session['username']
-    if (!isset($_SESSION['username'])) {
+    //this code doesnt allow you to access this page(index.php) without being logged in with session['email_address']
+    if (!isset($_SESSION['email_address'])) {
         header("Location: login.php");
     }
 
+    //codes for updating the selected subject
     if (isset($_POST["updateCourse"])) {
         $courseID = $_GET["id"];
         $updateSubjectCode = $_POST["subjectCode"];
@@ -26,9 +27,10 @@
 
         if (mysqli_query($connect, $updateSubjectDetails)) {
             echo "<script> alert('Subject updated.'); </script>";
-                echo "<script> window.location='viewprograms.php' </script>";
+            echo "<script> window.location='viewprograms.php' </script>";
         }
     }
+    //codes for updating the selected subject
 ?>
 <head>
 
@@ -38,7 +40,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Blank</title>
+    <title>Lorem Ipsum Colleges</title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -93,7 +95,7 @@
                 </a>
 
                 <a class="nav-link collapsed" href="addprogram.php" aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-fw fa-cog"></i>
+                    <i class="far fa-plus-square"></i>
                     <span>Add New Program</span>
                 </a>
             </li>
@@ -288,7 +290,7 @@
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">
-                                    <?php echo $_SESSION["username"]; ?>
+                                    <?php echo $_SESSION["email_address"]; ?>
                                 </span>
                                 <img class="img-profile rounded-circle"
                                     src="img/undraw_profile.svg">
@@ -299,6 +301,10 @@
                                 <a class="dropdown-item" href="#">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Profile
+                                </a>
+                                <a class="dropdown-item" href="changepassword.php">
+                                    <i class="fas fa-lock fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Change Password
                                 </a>
                                 <a class="dropdown-item" href="#">
                                     <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -331,13 +337,14 @@
 
                         <div class="col-lg-5">
 
-                            <!-- prfile name -->
+                            <!-- update subject section -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
                                     <h6 class="m-0 font-weight-bold text-primary"></h6>
                                 </div>
                                 <form method="POST" action="">
                                     <?php
+                                        //query for showing the info from a subject to be updated
                                         $courseID = $_GET["id"];
                                         $subjectCode = $_GET["subjectcode"];
                                         //echo $courseID . $subjectCode;
@@ -351,12 +358,10 @@
                                             $courseName = $rowUpdateSubject["coursename"];
                                             //echo $subjectName;
                                         }
+                                        //query for showing the info from a subject to be updated
                                     ?>
                                     <div class="card-body">
-                                        <!-- Subject name: <input type="text" class="form-control form-control-user" name="" id=""><br>
-                                        Subject code: <input type="text" class="form-control form-control-user" name="" id=""><br> -->
                                         
-
                                         <div class="input-group mb-3">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="">Subject Name:</span>
@@ -376,7 +381,7 @@
                                                 <label class="input-group-text" for="course">Year Level:</label>
                                             </div>
                                             <select class="custom-select" id="yearLevel" name="yearLevel">
-                                                <option selected value="">...</option>
+                                                <option selected value=""></option>
                                                 <option value="First">First</option>
                                                 <option value="Second">Second</option>
                                                 <option value="Third">Third</option>
@@ -392,6 +397,7 @@
                                     
                                 </form>
                             </div>
+                            <!-- update subject section -->
 
                         </div>
 

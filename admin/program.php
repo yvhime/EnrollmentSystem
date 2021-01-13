@@ -4,8 +4,8 @@
     session_start();
     include("connection.php");
 
-    //this code doesnt allow you to access this page(index.php) without being logged in with session['username']
-    if (!isset($_SESSION['username'])) {
+    //this code doesnt allow you to access this page(index.php) without being logged in with session['email_address']
+    if (!isset($_SESSION['email_address'])) {
         header("Location: login.php");
     }
 ?>
@@ -29,7 +29,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Tables</title>
+    <title>Lorem Ipsum Colleges</title>
 
     <!-- Custom fonts for this template -->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -87,7 +87,7 @@
                 </a>
 
                 <a class="nav-link collapsed" href="addprogram.php" aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-fw fa-cog"></i>
+                    <i class="far fa-plus-square"></i>
                     <span>Add New Program</span>
                 </a>
             </li>
@@ -284,7 +284,7 @@
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">
-                                    <?php echo $_SESSION["username"]; ?>
+                                    <?php echo $_SESSION["email_address"]; ?>
                                 </span>
                                 <img class="img-profile rounded-circle"
                                     src="img/undraw_profile.svg">
@@ -295,6 +295,10 @@
                                 <a class="dropdown-item" href="#">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Profile
+                                </a>
+                                <a class="dropdown-item" href="changepassword.php">
+                                    <i class="fas fa-lock fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Change Password
                                 </a>
                                 <a class="dropdown-item" href="#">
                                     <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -322,7 +326,7 @@
 
                 <?php
                     $id = $_GET['id']; //id came from viewprograms.php - program.php?id=
-                    $program = $_GET['program']; //program came from viewprograms.php - $program
+                    $program = $_GET['program']; //program came from viewprograms.php - ?program=
                     //echo $program;
                     // $programInfoSql = "SELECT * FROM program"; //WHERE {$program} = coursename WHERE {$id} = id
                     // $programResult = mysqli_query($connect, $programInfoSql);
@@ -349,6 +353,7 @@
                                     }
                                 ?>
 
+                                <!-- add program subject and print button section -->
                                 <div class="btn-group">
                                     <input type="submit" value="Add <?php echo $program; ?> Subject" name="addSubject" id="addSubject" 
                                     onclick="window.location='addsubject.php?program=<?php echo $program ?>'"
@@ -356,6 +361,7 @@
                                     <input type="submit" name="pdfReport" id="pdfReport" value="Print" class="btn btn-secondary btn-sm"
                                     onclick="window.open('listofsubjects.php?program=<?php echo $program; ?>')">
                                 </div>
+                                <!-- add program subject and print button section -->
 
                                 <!-- ORIGINAL<input type="submit" value="Add <?php echo $program; ?> Subject" name="addSubject" id="addSubject" 
                                     onclick="window.location='addsubject.php?program=<?php echo $program ?>'"
@@ -388,6 +394,7 @@
                                     <tbody>
 
                                         <?php
+                                            //query for showing subjects that belongs to the program listed in the database
                                             $viewProgramSubjects = "SELECT * FROM subject WHERE coursename = '".$program."' ";
                                             $viewConnect = mysqli_query($connect, $viewProgramSubjects);
 
@@ -397,11 +404,13 @@
                                                     echo "<td>" . $subjectRows['subjectname'] . "</td>";
                                                     echo "<td>" . $subjectRows['subjectcode'] . "</td>";
                                                     echo "<td>" . $subjectRows['yearlevel'] . "</td>";
+                                            //query for showing subjects that belongs to the program listed in the database
                                         ?>
                                             <td>
                                                 <div class="btn-group">
 
-                                                    <!-- studentnumber here should be the same for updateprogram.php // make sure to have method GET -->
+                                                    <!-- ?id and &subjectcode values to be passed on respective pages 
+                                                        notice the difference action on forms-->
                                                     <form method="GET" action="updateprogram.php">
                                                         <input type='button' value='Update' class="btn btn-secondary btn-sm" 
                                                         onclick="window.location = 'updateprogram.php?id=<?php echo $subjectRows['id']; ?>&subjectcode=<?php echo $subjectRows['subjectcode']; ?>' ">
@@ -411,8 +420,9 @@
                                                         <!-- <input type="button" value="Remove" class="btn btn-secondary btn-sm" onclick="window.location='removeprogram.php?studentnumber=<?php echo $studentRows['id']?>' "> -->
                                                         <input type="button" value="Remove" class="btn btn-secondary btn-sm" 
                                                         onclick="window.location = 'removeprogram.php?id=<?php echo $subjectRows['id']; ?>&subjectcode=<?php echo $subjectRows['subjectcode']; ?>' ">
-                                                </form>
-                                                
+                                                    </form>
+                                                    <!-- ?id and &subjectcode values to be passed on respective pages 
+                                                        notice the difference action on forms-->
                                                 </div>
                                             </td>
                                         <?php
