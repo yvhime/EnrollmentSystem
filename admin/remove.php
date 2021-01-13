@@ -4,8 +4,8 @@
     session_start();
     include("connection.php");
 
-    //this code doesnt allow you to access this page(index.php) without being logged in with session['username']
-    if (!isset($_SESSION['username'])) {
+    //this code doesnt allow you to access this page(index.php) without being logged in with session['email_address']
+    if (!isset($_SESSION['email_address'])) {
         header("Location: login.php");
     }
 
@@ -20,8 +20,6 @@
             echo "<script> window.location='viewstudents.php' </script>";
         }
         //$rowCheck = mysqli_num_rows($removeStudent);
-
-
     }
 ?>
 <head>
@@ -32,7 +30,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Blank</title>
+    <title>Lorem Ipsum Colleges</title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -88,7 +86,7 @@
                 </a>
 
                 <a class="nav-link collapsed" href="addprogram.php" aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-fw fa-cog"></i>
+                    <i class="far fa-plus-square"></i>
                     <span>Add New Program</span>
                 </a>
             </li>
@@ -283,7 +281,7 @@
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">
-                                    <?php echo $_SESSION['username'];?>
+                                    <?php echo $_SESSION['email_address'];?>
                                 </span>
                                 <img class="img-profile rounded-circle"
                                     src="img/undraw_profile.svg">
@@ -294,6 +292,10 @@
                                 <a class="dropdown-item" href="#">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Profile
+                                </a>
+                                <a class="dropdown-item" href="changepassword.php">
+                                    <i class="fas fa-lock fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Change Password
                                 </a>
                                 <a class="dropdown-item" href="#">
                                     <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -326,7 +328,7 @@
 
                         <div class="col-lg-5">
 
-                            <!-- prfile name -->
+                            <!-- remove student section -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
                                     <h6 class="m-0 font-weight-bold text-primary"> 
@@ -337,6 +339,7 @@
                                     <form method="POST" action="">
                                     <!-- studentnumber inside $_GET is the same as studentnumber in viewstudents.php // use $_GET  -->
                                     <?php
+                                        //query for showing selected students info from database
                                         $studentNumber = $_GET['studentnumber'];
                                         $studentInfoSql = "SELECT * FROM users WHERE {$studentNumber} = id ";
                                         $studentResult = mysqli_query($connect, $studentInfoSql);
@@ -351,7 +354,9 @@
                                             $birthday = $rowResult["birthday"];
                                             $address = $rowResult["address"];
                                             $program = $rowResult["program"];
+                                        //query for showing selected students info from database
                                     ?>
+
                                     <!-- <div class="input-group mb-3">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="">Student Name:</span>
@@ -359,6 +364,7 @@
                                         <input type="text" class="form-control" value="<?php echo $rowResult["lastname"] . ", " . $rowResult["firstname"]; ?>" 
                                             placeholder="" name="" id="" readonly>
                                     </div> -->
+                                    
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="">Student ID:</span>
@@ -434,6 +440,7 @@
                                     </form>
                                 </div>
                             </div>
+                            <!-- remove student section -->
 
                         </div>
 
