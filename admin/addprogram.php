@@ -331,6 +331,53 @@
 
                         </div>
 
+                        <div class="col-lg-7">
+                        <!-- DataTales Example -->
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">Current Programs Offered</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                            <thead>
+                                                <tr>
+                                                    <th>Degree</th>
+                                                    <th>Program</th>
+                                                </tr>
+                                            </thead>
+                                            <tfoot>
+                                                <tr>
+                                                    <th>Degree</th>
+                                                    <th>Program</th>
+                                                </tr>
+                                            </tfoot>
+                                            <tbody>
+
+                                                <?php 
+                                                    //query for showing all listed programs
+                                                    $viewAllPrograms = "SELECT * FROM program ORDER BY degree, coursename";
+                                                    $viewConnect = mysqli_query($connect, $viewAllPrograms);
+
+                                                    while ($courseRows = mysqli_fetch_array($viewConnect)) {
+                                                        echo "<tr>";
+                                                        //echo "<td>" . $courseRows['id'] . "</td>";
+                                                        echo "<td>" . $courseRows['degree'] . "</td>";
+                                                        echo "<td>" . $courseRows['coursename'] . "</td>";
+                                                    //query for showing all listed programs
+                                                ?>
+
+                                                <?php
+                                                        echo "</tr>";
+                                                    }
+                                                ?>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         
 
                     </div>

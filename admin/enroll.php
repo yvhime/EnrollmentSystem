@@ -10,6 +10,7 @@
     }
 
     if (isset($_POST['enroll'])) {
+        $selectedDegree = $_POST['degree'];
         $selectedProgram = $_POST['course'];
         $studentNumberHere = $_GET['studentnumber'];
         $yearLevel = $_POST['yearLevel'];
@@ -29,8 +30,12 @@
             /*$enrollToProgram = mysqli_query($connect, "UPDATE users SET program = '".$selectedProgram."',
                 yearlevel = '".$yearLevel."', semester = '".$semester."' WHERE {$studentNumberHere} = id ");*/
 
-            $enrollToProgram = "UPDATE users SET program = '".$selectedProgram."',
-                yearlevel = '".$yearLevel."', semester = '".$semester."' WHERE {$studentNumberHere} = id";
+            $enrollToProgram = "UPDATE users 
+                SET degree = '".$selectedDegree."',
+                program = '".$selectedProgram."',
+                yearlevel = '".$yearLevel."', 
+                semester = '".$semester."' 
+                WHERE {$studentNumberHere} = id";
 
             if (mysqli_query($connect, $enrollToProgram)) {
                 echo "<script> alert('Student successfully enrolled.'); </script>";
@@ -254,10 +259,10 @@
                                             $firstName= $rowResult["firstname"];
                                             $lastName = $rowResult["lastname"];
                                             $emailAddress = $rowResult["email_address"];
+                                            $degree = $rowResult["degree"];
                                             $program = $rowResult["program"];
                                             $currentYearLevel = $rowResult["yearlevel"];
                                             $currentSemester = $rowResult["semester"];
-                                            //echo $program;
                                     //query for showing a specific students info from database
                                     ?>
                                     <div class="input-group mb-3">
@@ -273,8 +278,6 @@
                                         
                                     ?>
 
-                                    <!-- <p>ID number: <?php echo $studentNumber ?> </p> -->
-
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="">Student ID:</span>
@@ -282,30 +285,30 @@
                                         <input type="text" class="form-control" value="<?php echo $studentNumber ?>" placeholder="" name="" id="" readonly>
                                     </div>
 
-                                    <select name="degree" id="degree" class="form-control form-control-user">
-                                        
-                                    </select>
-                                    <?php
+                                    <!-- degreeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee -->
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <label class="input-group-text" for="course">Degree:</label>
+                                        </div>
+                                        <!-- current degree of the student -->
+                                        <select class="custom-select" id="degree" name="degree">
+                                            <option value="<?php echo $degree; ?>" selected>
+                                                <?php echo $degree . " (current)"; ?>
+                                            </option>
+                                        <!-- current degree of the student -->
+                                        <?php
+                                            //query for showing all listed programs from database
+                                            $degreeList = "SELECT DISTINCT degree FROM program";
+                                            $degreeListResult = mysqli_query($connect, $degreeList);
 
-                                    ?>
-
-                                    <!-- ORIGINAL CODES -->
-
-                                    <!-- <p>Enroll to:  -->
-
-                                    <!-- dropdown menus coming from database -->
-                                    <!-- <select name="course" id="course" class="form-control form-control-user"> -->
-                                    <?php
-                                        // $courseList = "SELECT * FROM program";
-                                        // $courseListResult = mysqli_query($connect, $courseList);
-
-                                        // while ($courseRow = mysqli_fetch_array($courseListResult)) {
-                                        //     echo "<option value='". $courseRow['coursename'] ."' >" . $courseRow['coursename'] . "</option>";
-                                        // }
-                                    ?>
-                                    <!-- </select></p> -->
-
-                                    <!-- ORIGINAL CODES -->
+                                            while ($degreeRow = mysqli_fetch_array($degreeListResult)) {
+                                                echo "<option value='". $degreeRow['degree'] ."' >" . $degreeRow['degree'] . "</option>";
+                                            }
+                                            //query for showing all listed programs from database
+                                        ?>
+                                        </select>
+                                    </div>
+                                    <!-- degreeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee -->
 
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
@@ -313,7 +316,9 @@
                                         </div>
                                         <!-- current program of the student -->
                                         <select class="custom-select" id="course" name="course">
-                                            <option value="<?php echo $program; ?>" selected><?php echo $program; ?></option>
+                                            <option value="<?php echo $program; ?>" selected>
+                                                <?php echo $program . " (current)"; ?>
+                                            </option>
                                         <!-- current program of the student -->
                                         <?php
                                             //query for showing all listed programs from database
@@ -327,18 +332,6 @@
                                         ?>
                                         </select>
                                     </div>
-
-                        
-                                    <!-- ORIGINAL CODES -->        
-                                    <!-- Year Level: 
-                                    <select name="yearLevel" id="yearLevel" class="form-control form-control-user">
-                                        <option value="First Year">First Year</option>
-                                        <option value="Second Year">Second Year</option>
-                                        <option value="Third Year">Third Year</option>
-                                        <option value="Fourth Year">Fourth Year</option>
-                                    </select>
-                                    <br> -->
-                                    <!-- ORIGINAL CODES -->  
                                     
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
@@ -346,7 +339,9 @@
                                         </div>
                                         <!-- current year level of the student -->
                                         <select class="custom-select" id="yearLevel" name="yearLevel">
-                                            <option value="<?php echo $currentYearLevel; ?>" selected><?php echo $currentYearLevel; ?></option>
+                                            <option value="<?php echo $currentYearLevel; ?>" selected>
+                                                <?php echo $currentYearLevel . " (current)"; ?>
+                                            </option>
                                             <option value="First Year">First Year</option>
                                             <option value="Second Year">Second Year</option>
                                             <option value="Third Year">Third Year</option>
@@ -354,21 +349,14 @@
                                         </select>
                                     </div>
 
-                                    <!-- ORIGINAL CODES --> 
-                                    <!-- Semester: 
-                                    <select name="semester" id="semester" class="form-control form-control-user">
-                                        <option value="First Semester">First Semester</option>
-                                        <option value="Second Semester">Second Semester</option>
-                                    </select>
-                                    <br> -->
-                                    <!-- ORIGINAL CODES --> 
-
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
                                             <label class="input-group-text" for="semester">Semester:</label>
                                         </div>
                                         <select class="custom-select" id="semester" name="semester">
-                                            <option value="<?php echo $currentSemester;?>" selected><?php echo $currentSemester;?></option>
+                                            <option value="<?php echo $currentSemester;?>" selected>
+                                                <?php echo $currentSemester . " (current)";?>
+                                            </option>
                                             <option value="First Semester">First Semester</option>
                                             <option value="Second Semester">Second Semester</option>
                                         </select>
