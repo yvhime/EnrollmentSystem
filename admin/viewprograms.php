@@ -4,8 +4,8 @@
     session_start();
     include("connection.php");
 
-    //this code doesnt allow you to access this page(index.php) without being logged in with session['username']
-    if (!isset($_SESSION['username'])) {
+    //this code doesnt allow you to access this page(index.php) without being logged in with session['email_address']
+    if (!isset($_SESSION['email_address'])) {
         header("Location: login.php");
     }
 ?>
@@ -17,7 +17,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Tables</title>
+    <title>Lorem Ipsum Colleges</title>
 
     <!-- Custom fonts for this template -->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -77,7 +77,7 @@
                 </a>
 
                 <a class="nav-link collapsed" href="addprogram.php" aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-fw fa-cog"></i>
+                    <i class="far fa-plus-square"></i>
                     <span>Add New Program</span>
                 </a>
             </li>
@@ -275,7 +275,7 @@
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">
-                                    <?php echo $_SESSION["username"]; ?>    
+                                    <?php echo $_SESSION["email_address"]; ?>    
                                 </span>
                                 <img class="img-profile rounded-circle"
                                     src="img/undraw_profile.svg">
@@ -286,6 +286,10 @@
                                 <a class="dropdown-item" href="#">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Profile
+                                </a>
+                                <a class="dropdown-item" href="changepassword.php">
+                                    <i class="fas fa-lock fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Change Password
                                 </a>
                                 <a class="dropdown-item" href="#">
                                     <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -341,6 +345,7 @@
                                     <tbody>
 
                                         <?php 
+                                            //query for showing all listed programs
                                             $viewAllPrograms = "SELECT * FROM program";
                                             $viewConnect = mysqli_query($connect, $viewAllPrograms);
 
@@ -349,11 +354,13 @@
                                                 echo "<td>" . $courseRows['id'] . "</td>";
                                                 echo "<td>" . $courseRows['degree'] . "</td>";
                                                 echo "<td>" . $courseRows['coursename'] . "</td>";
+                                            //query for showing all listed programs
                                         ?>
 
                                         <form action="program.php" method="GET">
                                             <td>
                                                 <!-- use & sign when putting multiple GET values on your URL -->
+                                                <!-- id & program passed onto program.php -->
                                                 <input type='button' value='View Program' class="btn btn-secondary btn-sm" 
                                                     onclick="window.location = 'program.php?id=<?php echo $courseRows['id']?>&program=<?php echo $courseRows['coursename']?>' ">
                                             </td>
